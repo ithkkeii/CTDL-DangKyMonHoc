@@ -1,0 +1,20 @@
+﻿  ProjectCTDL.cpp
+E:\DevC\AAAAA\ProjectCTDL\Raw.h(25,1): warning C4005:  'DELETE': macro redefinition
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.17763.0\um\winnt.h(8894): message :  see previous definition of 'DELETE'
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(42,12): warning C4244:  'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(66,2): warning C4091:  'typedef ': ignored on left of 'MonHoc' when no variable is declared
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(70,2): warning C4091:  'typedef ': ignored on left of 'DS_MonHoc' when no variable is declared
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(77,2): warning C4091:  'typedef ': ignored on left of 'DangKy' when no variable is declared
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(81,2): warning C4091:  'typedef ': ignored on left of 'DS_DangKy' when no variable is declared
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(92,2): warning C4091:  'typedef ': ignored on left of 'SinhVien' when no variable is declared
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(96,2): warning C4091:  'typedef ': ignored on left of 'DS_SinhVien' when no variable is declared
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(111,2): warning C4091:  'typedef ': ignored on left of 'LopTinChi' when no variable is declared
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(115,2): warning C4091:  'typedef ': ignored on left of 'DS_LopTinChi' when no variable is declared
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(1483,27): warning C4018:  '<': signed/unsigned mismatch
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(1757,41): warning C4244:  '=': conversion from 'int' to 'float', possible loss of data
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(1769,38): warning C4244:  '=': conversion from 'int' to 'float', possible loss of data
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(4823,16): warning C4553:  '==': result of expression not used; did you intend '='?
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(4863,12): warning C4101:  'ds_mh': unreferenced local variable
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(4863,12): warning C4101: E:\DevC\AAAAA\ProjectCTDL\Mylib.h(22) : warning C4172: returning address of local variable or temporary: S
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(4863,12): warning C4101: E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(1821) : warning C4715: 'TimSinhVien': not all control paths return a value
+  ProjectCTDL.vcxproj -> E:\DevC\AAAAA\ProjectCTDL\Debug\ProjectCTDL.exe
