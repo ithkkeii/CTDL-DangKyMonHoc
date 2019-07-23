@@ -1204,7 +1204,7 @@ END:
 	return;
 }
 
-// Không dùng
+// Không dùng nữa
 void ChinhSuaLopTinChiBETA(DS_LopTinChi& ds_ltc) {
 
 	int key = 0, dem = 0, trang = 0, tongTrang = 0, move = 0;
@@ -1551,8 +1551,6 @@ void ChinhSuaLopTinChi(DS_LopTinChi& ds_ltc) {
 					move = ds_ltc.soLuong % 15 - 1;
 				}
 			}
-
-
 			if (move > 14) {
 				move = 14;
 			}
@@ -2348,7 +2346,7 @@ void PhanTrangLopSinhVien(char maLop[], int& trang, string choice = "") {
 	gotoxy(84, 36);
 	cout << trang + 1 << "/" << tongTrang;
 
-	while (true) { //Tro toi lop can tim
+	while (true) { //Trỏ tới lớp cần tìm, con trỏ nằm ở sinh viên đầu tiên
 		if (strcmp(p->sinhVien.maLop, maLop) == 0)
 			break;
 		p = p->next;
@@ -3432,7 +3430,7 @@ void NhapMSSVDeXoa(DS_LopTinChi& ds_ltc, DS_SinhVien* bstart, DS_SinhVien* start
 			}
 			bool choice = false;
 			while (true) {
-				ButtonXacNhanXoaSV(choice);
+				ButtonXacNhanXoa(choice);
 				key = GetKey();
 				if (key == RIGHT || key == LEFT) {
 					choice = !choice;
@@ -3755,6 +3753,11 @@ void InitializeTree(DS_MonHoc* root) {
 	return;
 }
 
+void Luu_NLR(DS_MonHoc* p, ofstream& fileOutput) {
+
+}
+
+//cách lưu LNR làm biến đổi cây khi đọc
 void Luu_LNR(DS_MonHoc* p, ofstream& fileOutput) {
 	if (p != NULL) {
 		Luu_LNR(p->left, fileOutput);
@@ -3850,6 +3853,23 @@ void TreeToArray(DS_MonHoc* p, int& count, MonHoc* mhArr) {
 	}
 }
 
+//Sử dụng Selection Sort cho danh sách môn học
+void SelectionSortDSMH(MonHoc*& arr, int n) {         //Danh sách môn học có n môn học
+	MonHoc min;
+	int vitrimin;
+	for (int i = 0; i < n - 1; i++) {
+		min = arr[i];
+		vitrimin = i;
+		for (int j = i + 1; j < n; j++)
+			if (strcmp(arr[j].tenMonHoc, min.tenMonHoc) < 0) {
+				min = arr[j];
+				vitrimin = j;
+			}
+		arr[vitrimin] = arr[i];
+		arr[i] = min;
+	}
+}
+
 void PhanTrangDSMonHoc(DS_MonHoc* p, int& trang, string choice = "") {
 	KhungDSMonHoc();
 	//Phan Trang
@@ -3857,10 +3877,20 @@ void PhanTrangDSMonHoc(DS_MonHoc* p, int& trang, string choice = "") {
 	int tongMonHoc = 0;
 	DemInorder(tree, tongMonHoc);
 
-	//con trỏ mảng chứa môn học
+	//con trỏ mảng chứa môn học có thứ tự theo cây nhị phân tìm kiếm
 	MonHoc* mhArr = new MonHoc[tongMonHoc];
-	int count = 0; //Biến đệ quy (không reset mỗi lần đệ quy)
+
+	//Con trỏ mảng chứa môn học có thứ tự theo tên môn học
+	MonHoc* mhArrSort = new MonHoc[tongMonHoc];
+
+	//Biến đệ quy (không reset mỗi lần đệ quy)
+	int count = 0;
 	TreeToArray(tree, count, mhArr);
+	count = 0;
+	TreeToArray(tree, count, mhArrSort);
+
+	//Sắp xếp Selection Sort cho mảng
+	SelectionSortDSMH(mhArrSort, tongMonHoc);
 
 	if (tongMonHoc == 0)
 		return;
@@ -3870,6 +3900,12 @@ void PhanTrangDSMonHoc(DS_MonHoc* p, int& trang, string choice = "") {
 		trang++;
 	}
 	if (choice == "F2" && trang > 0) {
+		trang--;
+	}
+	if (choice == "F3SORT" && trang < (tongTrang - 1)) {
+		trang++;
+	}
+	if (choice == "F2SORT" && trang > 0) {
 		trang--;
 	}
 	if (tongMonHoc < 15) {
@@ -3882,18 +3918,32 @@ void PhanTrangDSMonHoc(DS_MonHoc* p, int& trang, string choice = "") {
 	gotoxy(77, 30);
 	cout << trang + 1 << "/" << tongTrang;
 
-	for (int i = trang * 15; i < 15 + trang * 15 && i < tongMonHoc; i++) {
-		SetBGColor(7);
-		SetColor(1);
-		gotoxy(12, 14 + (i - trang * 15));
-		cout << mhArr[i].maMonHoc;
-		gotoxy(25, 14 + (i - trang * 15));
-		cout << mhArr[i].tenMonHoc;
-		gotoxy(65, 14 + (i - trang * 15));
-		cout << mhArr[i].soTCLT;
-		gotoxy(74, 14 + (i - trang * 15));
-		cout << mhArr[i].soTCTH;
-	}
+	if (choice == "F2SORT" || choice == "F3SORT" || choice == "SORT") {
+		for (int i = trang * 15; i < 15 + trang * 15 && i < tongMonHoc; i++) {
+			SetBGColor(7);
+			SetColor(1);
+			gotoxy(12, 14 + (i - trang * 15));
+			cout << mhArrSort[i].maMonHoc;
+			gotoxy(25, 14 + (i - trang * 15));
+			cout << mhArrSort[i].tenMonHoc;
+			gotoxy(65, 14 + (i - trang * 15));
+			cout << mhArrSort[i].soTCLT;
+			gotoxy(74, 14 + (i - trang * 15));
+			cout << mhArrSort[i].soTCTH;
+		}
+	} else
+		for (int i = trang * 15; i < 15 + trang * 15 && i < tongMonHoc; i++) {
+			SetBGColor(7);
+			SetColor(1);
+			gotoxy(12, 14 + (i - trang * 15));
+			cout << mhArr[i].maMonHoc;
+			gotoxy(25, 14 + (i - trang * 15));
+			cout << mhArr[i].tenMonHoc;
+			gotoxy(65, 14 + (i - trang * 15));
+			cout << mhArr[i].soTCLT;
+			gotoxy(74, 14 + (i - trang * 15));
+			cout << mhArr[i].soTCTH;
+		}
 	return;
 }
 
@@ -4500,7 +4550,7 @@ OK:
 		if (key == LEFT) {
 			TurnOKButtonKhungMonHoc(false);
 			vitri = strlen(soTCTH_ch);
-			gotoxy(75 + vitri, 7);
+			gotoxy(63 + vitri, 7);
 			goto TCTH;
 		}
 		if (key == F3) {
@@ -4517,57 +4567,940 @@ OK:
 	return;
 }
 
+//Tìm giá trị của cực trái
+DS_MonHoc* rp;
+MonHoc LeftMostValue(DS_MonHoc* p) {
+	if (p->left != NULL)
+		LeftMostValue(p->left);
+	else
+		return p->monHoc;
+}
+
+DS_MonHoc* Remove(DS_MonHoc*& p, char maMonHoc[]) {
+	if (p == NULL)
+		return p;
+	if (strcmp(maMonHoc, p->monHoc.maMonHoc) < 0) {
+		p->left = Remove(p->left, maMonHoc);
+	} else if (strcmp(maMonHoc, p->monHoc.maMonHoc) > 0) {
+		p->right = Remove(p->right, maMonHoc);
+	} else {			              //Tìm được key
+		rp = p;
+		if (rp->right == NULL) {
+			p = rp->left;		      //p có thể là lá hoặc là nút có cây con bên trái
+			delete rp;
+			return p;
+		}
+		if (rp->left == NULL) {
+			p = rp->right;
+			delete rp;
+			return p;
+		}
+		p->monHoc = LeftMostValue(p->right);
+		p->right = Remove(p->right, p->monHoc.maMonHoc);
+	}
+	return p;
+}
+
 void XoaMonHoc() {
+	KhungXoaMonHoc();
+	KhungDSMonHoc();
+	HuongDanThemMonHoc();
+	int key, vitri = 0, trang = 0;
+	PhanTrangDSMonHoc(tree, trang);
+	TurnOKButtonKhungXoaMonHoc(false);
+
+	char maMonHoc[10];
+	maMonHoc[0] = '\0';
+
+MaMonHoc:
+	while (true) {
+		//Nhap Ma Mon Hoc
+		SetColor(3);
+		SetBGColor(7);
+		gotoxy(42 + vitri, 7);
+		key = GetKey();
+		if (((key >= 'A' && key <= 'Z') || (key >= 'a' && key <= 'z') || (key <= '9' && key >= '0')) && (vitri < 9)) {
+			maMonHoc[vitri] = toupper((char)key);
+			cout << maMonHoc[vitri];
+			vitri++;
+		}
+		if (key == BACKSPACE && vitri > 0) {
+			vitri--;
+			gotoxy(42 + vitri, 7);
+			cout << " ";
+		}
+		if (key == RIGHT || key == ENTER) {
+			maMonHoc[vitri] = '\0';
+			if (maMonHoc[0] == '\0') {
+				Alert("Chua Nhap Ma Mon Hoc", 30, 9, 4, 900);
+				continue;
+			}
+			if (CheckTrungMMH(tree, maMonHoc) == NULL) {
+				Alert("Ma Mon Hoc Khong Ton Tai!!!", 30, 9, 4, 900);
+				continue;
+			}
+			goto OK;
+		}
+		if (key == ESC) {
+			clrscr();
+			return;
+		}
+		if (key == F3) {
+			PhanTrangDSMonHoc(tree, trang, "F3");
+		}
+		if (key == F2) {
+			PhanTrangDSMonHoc(tree, trang, "F2");
+		}
+	}
+OK:
+	TurnOKButtonKhungXoaMonHoc(true);
+	while (true) {
+		key = GetKey();
+		if (key == ENTER) {
+			bool choice = false;
+			while (true) {
+				ButtonXacNhanXoa(choice);
+				key = GetKey();
+				if (key == RIGHT || key == LEFT)
+					choice = !choice;
+				if (key == ENTER) {
+					if (choice == false) {
+						//restart
+						SetBGColor(7);
+						gotoxy(38, 10);
+						cout << "                      ";
+
+						vitri = 0;
+						maMonHoc[0] = '\0';
+						KhungXoaMonHoc();
+						KhungDSMonHoc();
+						PhanTrangDSMonHoc(tree, trang);
+						goto MaMonHoc;
+					}
+					if (choice == true) {
+						Remove(tree, maMonHoc);
+						//restart
+						SetBGColor(7);
+						gotoxy(38, 10);
+						cout << "                      ";
+
+						vitri = 0;
+						maMonHoc[0] = '\0';
+						KhungXoaMonHoc();
+						KhungDSMonHoc();
+						PhanTrangDSMonHoc(tree, trang);
+						Alert("Da Xoa Mon Hoc Thanh Cong!!!", 30, 9, 2, 900);
+						goto MaMonHoc;
+					}
+				}
+			}
+		}
+		if (key == LEFT) {
+			TurnOKButtonKhungXoaMonHoc(false);
+			vitri = strlen(maMonHoc);
+			gotoxy(42 + vitri, 7);
+			goto MaMonHoc;
+		}
+		if (key == F3) {
+			PhanTrangDSMonHoc(tree, trang, "F3");
+		}
+		if (key == F2) {
+			PhanTrangDSMonHoc(tree, trang, "F2");
+		}
+		if (key == ESC) {
+			clrscr();
+			return;
+		}
+	}
 	return;
 }
-//DS_MonHoc* rp;
-//DS_MonHoc* remove(DS_MonHoc*& p, MonHoc monHoc, int x) {
-//	if (p == NULL) {
-//		cout << "Khong tim thay";
-//	} else if (x < p->monHoc.soTCLT) {
-//		p->left = remove(p->left, monHoc, x);
-//	} else if (x > p->monHoc.soTCLT) {
-//		p->right = remove(p->right, monHoc, x);
-//	} else {             //Tìm được key
-//		rp = p;
-//		if (rp->right == NULL)
-//			p = rp->left;       //p có thể là lá hoặc là nút có cây con bên trái
-//		else if (rp->left == NULL)
-//			p = rp->right;
-//		else
-//			remove_case_3(rp->right);
-//		delete rp;
-//		return p;
-//	}
-//}
-//
-//DS_MonHoc* Delete(DS_MonHoc* root, int value) {
-//	if (root == NULL)
-//		return root;
-//	if (value < root->monHoc.soTCLT)
-//		root->left = Delete(root->left, value);
-//	else if (value > root->monHoc.soTCLT)
-//		root->right = Delete(root->right, value);
-//	else {
-//		// root->data == value, delete this node
-//		if (root->left == NULL) {
-//			DS_MonHoc* newRoot = root->right;
-//			free(root);
-//			return newRoot;
-//		}
-//		if (root->right == NULL) {
-//			DS_MonHoc* newRoot = root->left;
-//			free(root);
-//			return newRoot;
-//		}
-//		root->data = LeftMostValue(root->right);
-//		root->right = Delete(root->right, root->data);
-//	}
-//	return root;
-//}
+
+//Không dùng nữa
+DS_MonHoc* Delete(DS_MonHoc* root, int value) {
+	if (root == NULL)
+		return root;
+	if (value < root->monHoc.soTCLT)
+		root->left = Delete(root->left, value);
+	else if (value > root->monHoc.soTCLT)
+		root->right = Delete(root->right, value);
+	else {
+		// root->data == value, delete this node
+		if (root->left == NULL) {
+			DS_MonHoc* newRoot = root->right;
+			free(root);
+			return newRoot;
+		}
+		if (root->right == NULL) {
+			DS_MonHoc* newRoot = root->left;
+			free(root);
+			return newRoot;
+		}
+		//root->monHoc = LeftMostValue(root->right);
+		root->right = Delete(root->right, root->monHoc.soTCTH);
+	}
+	return root;
+}
+
+void InDSMH() {
+	KhungDSMonHoc("IN");
+	int key, trang = 0;
+	PhanTrangDSMonHoc(tree, trang, "SORT");
+	HuongDanInDSMH();
+	while (true) {
+		key = GetKey();
+		if (key == LEFT) {
+			PhanTrangDSMonHoc(tree, trang, "F2SORT");
+		}
+		if (key == RIGHT) {
+			PhanTrangDSMonHoc(tree, trang, "F3SORT");
+		}
+		if (key == ESC) {
+			clrscr();
+			return;
+		}
+	}
+	return;
+}
 //---------------------------------------------KET THUC QUAN LY MON HOC----------------------------------------------------
 
+//-----------------------------------------------DANG KY MON HOC-----------------------------------------------------------
 
+//Tìm Mã Môn Học dựa vào Mã Lớp Tín Chỉ
+string TimMMH(DS_LopTinChi& ds_ltc, int maLopTinChi) {
+	for (int i = 0; i < ds_ltc.soLuong; i++) {
+		if (ds_ltc.ds[i]->maLopTinChi == maLopTinChi)
+			return string(ds_ltc.ds[i]->maMonHoc);
+	}
+	return "";
+}
+
+int CheckExist(int arr[50], int x) {
+	for (int i = 0; i < 50; i++) {
+		if (arr[i] == 0)
+			return 0;
+		if (arr[i] == x)
+			return 1;
+	}
+	return 0;
+}
+
+//choice == "THEM" HOẶC choice == "XOA"
+void LuuLuaChon(int arrXacNhan[50], int maLopTinChi, string choice) {
+	if (choice == "THEM") {
+		for (int i = 0; i < 50; i++) {
+			if (arrXacNhan[i] == 0) {
+				arrXacNhan[i] = maLopTinChi;
+				return;
+			}
+		}
+	}
+	if (choice == "XOA") {
+		for (int i = 0; i < 50; i++) {
+			if (arrXacNhan[i] == maLopTinChi) {
+				for (int k = i; k < 50; k++) {
+					if (k == 49)
+						arrXacNhan[k] = 0;
+					if (arrXacNhan[k] == 0)
+						return;
+					arrXacNhan[k] = arrXacNhan[k + 1];
+				}
+			}
+		}
+	}
+	return;
+}
+
+//Choice == "UPDATE" || choice == "CONTROL";
+void LopTinChiDaChon(DS_LopTinChi& ds_ltc, int arrXacNhan[50], int trang, string choice = "UPDATE") {
+	KhungLuuLuaChon();
+	int key, move = 0, tongTrang = 0;
+
+	//Số lượng phần tử của arrXacNhan (phần tử != 0)
+	int soLuong = 0;
+	for (int i = 0; i < 50; i++) {
+		if (arrXacNhan[i] == 0)
+			break;
+		soLuong++;
+	}
+	tongTrang = ((soLuong - 1) / 15 + 1);
+	if (soLuong == 0) {
+		return;
+	}
+
+	DS_MonHoc* p = NULL;
+	char x[10];
+	if (choice == "UPDATE") {
+		if (soLuong < 15) {
+			trang = 0;
+			tongTrang = 1;
+		}
+
+		for (int i = 15 * trang; i < 15 + 15 * trang && i < soLuong; i++) {
+			strcpy_s(x, TimMMH(ds_ltc, arrXacNhan[i]).c_str());
+			p = CheckTrungMMH(tree, x);
+			SetColor(1);
+			SetBGColor(7);
+			gotoxy(96, 16 + i - 15 * trang);      //i có giá trị 0~15 nên không dùng làm index
+			cout << p->monHoc.maMonHoc;
+			gotoxy(110, 16 + i - 15 * trang);
+			cout << p->monHoc.tenMonHoc;
+			gotoxy(152, 16 + i - 15 * trang);
+			cout << p->monHoc.soTCLT;
+			gotoxy(161, 16 + i - 15 * trang);
+			cout << p->monHoc.soTCTH;
+		}
+	}
+
+RELOAD:
+	if (choice == "CONTROL") {
+		int i = 0;
+		LopTinChiDaChon(ds_ltc, arrXacNhan, trang, "UPDATE");
+
+		if (soLuong < 15) {
+			trang = 0;
+			tongTrang = 1;
+		}
+		// Tính toán lại số lượng để lúc delete load lại cho đúng, không crash
+		soLuong = 0;
+		for (int i = 0; i < 50; i++) {
+			if (arrXacNhan[i] == 0)
+				break;
+			soLuong++;
+		}
+		tongTrang = ((soLuong - 1) / 15 + 1);
+		if (soLuong == 0) {
+			return;
+		}
+
+		//Thanh sáng mặc định ở move 0
+		{
+			i = 15 * trang + move;
+			strcpy_s(x, TimMMH(ds_ltc, arrXacNhan[i]).c_str());
+			p = CheckTrungMMH(tree, x);
+			SetBGColor(15);
+			SetColor(3);
+			gotoxy(95, 16 + move);
+			cout << "                                                                       ";
+			SetColor(4);
+			gotoxy(96, 16 + move);
+			cout << p->monHoc.maMonHoc;
+			gotoxy(110, 16 + move);
+			cout << p->monHoc.tenMonHoc;
+			gotoxy(152, 16 + move);
+			cout << p->monHoc.soTCLT;
+			gotoxy(161, 16 + move);
+			cout << p->monHoc.soTCTH;
+
+			gotoxy(1, 1);
+			cout << i << "  " << move;
+		}
+
+		while (true) {
+			key = GetKey();
+			if (key == DOWN) {
+				move++;
+				if (trang == tongTrang - 1) {
+					if ((move > soLuong % 15 - 1) && (soLuong % 15 != 0)) {
+						move = soLuong % 15 - 1;
+					}
+				}
+				if (move > 14) {
+					move = 14;
+				}
+				if (move > soLuong - 1) {
+					move = soLuong - 1;
+				}
+				i = 15 * trang + move;
+				strcpy_s(x, TimMMH(ds_ltc, arrXacNhan[i - 1]).c_str());
+				p = CheckTrungMMH(tree, x);
+				if (move - 1 >= 0) {
+					SetColor(5);
+					SetBGColor(7);
+					gotoxy(95, 16 + move - 1);
+					cout << "|          |                                        |        |        |";
+					SetColor(1);
+					gotoxy(96, 16 + move - 1);
+					cout << p->monHoc.maMonHoc;
+					gotoxy(110, 16 + move - 1);
+					cout << p->monHoc.tenMonHoc;
+					gotoxy(152, 16 + move - 1);
+					cout << p->monHoc.soTCLT;
+					gotoxy(161, 16 + move - 1);
+					cout << p->monHoc.soTCTH;
+
+					gotoxy(1, 1);
+					cout << i << "  " << move;
+				}
+				strcpy_s(x, TimMMH(ds_ltc, arrXacNhan[i]).c_str());
+				p = CheckTrungMMH(tree, x);
+				SetBGColor(15);
+				SetColor(3);
+				gotoxy(95, 16 + move);
+				cout << "                                                                       ";
+				SetColor(4);
+				gotoxy(96, 16 + move);
+				cout << p->monHoc.maMonHoc;
+				gotoxy(110, 16 + move);
+				cout << p->monHoc.tenMonHoc;
+				gotoxy(152, 16 + move);
+				cout << p->monHoc.soTCLT;
+				gotoxy(161, 16 + move);
+				cout << p->monHoc.soTCTH;
+
+				gotoxy(1, 1);
+				cout << i << "  " << move;
+			}
+			if (key == UP) {
+				move--;
+				if (move < 1) {
+					move = 0;
+				}
+				if (move > soLuong - 1) {
+					move = soLuong - 1;
+				}
+				i = 15 * trang + move;
+
+				if (i + 1 < soLuong) {           // i + 1 < count để UP 1 phần tử không bị lỗi vì không có phần tử sau nó
+					strcpy_s(x, TimMMH(ds_ltc, arrXacNhan[i + 1]).c_str());
+					p = CheckTrungMMH(tree, x);
+				}
+
+				if (move + 1 <= 15) {
+					if (i + 1 < soLuong) {      //Ngan bug 1 slot o trang
+						SetColor(5);
+						SetBGColor(7);
+						gotoxy(95, 16 + move + 1);
+						cout << "|          |                                        |        |        |";
+						SetColor(1);
+						gotoxy(96, 16 + move + 1);
+						cout << p->monHoc.maMonHoc;
+						gotoxy(110, 16 + move + 1);
+						cout << p->monHoc.tenMonHoc;
+						gotoxy(152, 16 + move + 1);
+						cout << p->monHoc.soTCLT;
+						gotoxy(161, 16 + move + 1);
+						cout << p->monHoc.soTCTH;
+
+						gotoxy(1, 1);
+						cout << i << "  " << move;
+					}
+				}
+				strcpy_s(x, TimMMH(ds_ltc, arrXacNhan[i]).c_str());
+				p = CheckTrungMMH(tree, x);
+				SetBGColor(15);
+				SetColor(3);
+				gotoxy(95, 16 + move);
+				cout << "                                                                       ";
+				SetColor(4);
+				gotoxy(96, 16 + move);
+				cout << p->monHoc.maMonHoc;
+				gotoxy(110, 16 + move);
+				cout << p->monHoc.tenMonHoc;
+				gotoxy(152, 16 + move);
+				cout << p->monHoc.soTCLT;
+				gotoxy(161, 16 + move);
+				cout << p->monHoc.soTCTH;
+
+				gotoxy(1, 1);
+				cout << i << "  " << move;
+			}
+			if (key == LEFT && trang > 0) {
+				trang--;
+				move = 0;
+				goto RELOAD;
+			}
+			if (key == RIGHT && trang < tongTrang - 1) {
+				trang++;
+				move = 0;
+				goto RELOAD;
+			}
+			if (key == ENTER) {
+				LuuLuaChon(arrXacNhan, arrXacNhan[move + trang * 15], "XOA");
+				move = 0;
+				trang = 0;
+				goto RELOAD;
+			}
+			if (key == ESC) {
+				return;
+			}
+		}
+	}
+	return;
+}
+
+void ChonLopTinChi(DS_LopTinChi& ds_ltc, int hocKy, int nienKhoa, int arrXacNhan[50]) {
+RESET:
+	KhungChonLopTinChi();
+
+	//Count là số lượng lớp tín chỉ phù hợp
+	int count = 0, trang = 0, tongTrang = 0, key;
+	for (int i = 0; i < ds_ltc.soLuong; i++) {
+		if (ds_ltc.ds[i]->hocKy == hocKy && ds_ltc.ds[i]->nienKhoa == nienKhoa)
+			count++;
+	}
+	tongTrang = ((count - 1) / 15 + 1);
+	if (count == 0) {       //Không có lớp tín chỉ phù hợp
+		//Alert
+		return;
+	}
+
+	LopTinChi* arr = new LopTinChi[count];
+	int k, i;
+	for (i = 0, k = 0; i < ds_ltc.soLuong && k < count; i++) {               //Không k < count báo lỗi sẽ tràn
+		if (ds_ltc.ds[i]->hocKy == hocKy && ds_ltc.ds[i]->nienKhoa == nienKhoa) {
+			arr[k] = *(ds_ltc.ds[i]);
+			k++;
+		}
+	}
+
+	//Thanh Sáng, move là vị trí chọn thanh sáng, move bắt đầu từ 0
+	int move = 0;
+
+RELOAD:
+	if (count < 15) {
+		tongTrang = 1;
+		trang = 0;
+	}
+	DS_MonHoc* p = NULL;      //p sẽ chứa địa chỉ của mã môn học trong cây
+	for (int i = trang * 15; i < 15 + trang * 15 && i < count; i++) {
+		p = CheckTrungMMH(tree, arr[i].maMonHoc);
+		SetColor(1);
+		SetBGColor(7);
+		gotoxy(11, 16 + i - trang * 15);
+		cout << arr[i].maMonHoc;
+		gotoxy(22, 16 + i - trang * 15);
+		cout << p->monHoc.tenMonHoc;
+		gotoxy(65, 16 + i - trang * 15);
+		cout << arr[i].svMax;
+		gotoxy(75, 16 + i - trang * 15);
+		cout << p->monHoc.soTCLT;
+		gotoxy(84, 16 + i - trang * 15);
+		cout << p->monHoc.soTCTH;
+
+		if (CheckExist(arrXacNhan, arr[i].maLopTinChi)) {
+			gotoxy(5, 16 + i - trang * 15);
+			cout << "YES";
+		}
+	}
+
+	//Thanh sáng mặc định ở move 0 
+	{
+		i = 15 * trang + move;
+		p = CheckTrungMMH(tree, arr[i].maMonHoc);
+		//if (move - 1 >= 0) {
+		SetBGColor(15);
+		SetColor(3);
+		gotoxy(10, 16 + move);
+		cout << "                                                                                ";
+		SetColor(4);
+		gotoxy(11, 16 + move);
+		cout << arr[i].maMonHoc;
+		gotoxy(22, 16 + move);
+		cout << p->monHoc.tenMonHoc;
+		gotoxy(65, 16 + move);
+		cout << arr[i].svMax;
+		gotoxy(75, 16 + move);
+		cout << p->monHoc.soTCLT;
+		gotoxy(84, 16 + move);
+		cout << p->monHoc.soTCTH;
+
+		gotoxy(1, 1);
+		cout << i << "  " << move;
+		//}
+	}
+
+	p == NULL;
+	while (true) {
+		key = GetKey();
+		if (key == DOWN) {
+			move++;
+			if (trang == tongTrang - 1) {
+				if ((move > count % 15 - 1) && (count % 15 != 0)) {
+					move = count % 15 - 1;
+				}
+			}
+			if (move > 14) {
+				move = 14;
+			}
+			if (move > count - 1) {
+				move = count - 1;
+			}
+			i = 15 * trang + move;
+			p = CheckTrungMMH(tree, arr[i - 1].maMonHoc);
+			if (move - 1 >= 0) {
+				SetColor(5);
+				SetBGColor(7);
+				gotoxy(10, 16 + move - 1);
+				cout << "|          |                                        |        |        |        |";
+				SetColor(1);
+				gotoxy(11, 16 + move - 1);
+				cout << arr[i - 1].maMonHoc;
+				gotoxy(22, 16 + move - 1);
+				cout << p->monHoc.tenMonHoc;
+				gotoxy(65, 16 + move - 1);
+				cout << arr[i - 1].svMax;
+				gotoxy(75, 16 + move - 1);
+				cout << p->monHoc.soTCLT;
+				gotoxy(84, 16 + move - 1);
+				cout << p->monHoc.soTCTH;
+
+				gotoxy(1, 1);
+				cout << i << "  " << move;
+			}
+			p = CheckTrungMMH(tree, arr[i].maMonHoc);
+			SetBGColor(15);
+			SetColor(3);
+			gotoxy(10, 16 + move);
+			cout << "                                                                                ";
+			SetColor(4);
+			gotoxy(11, 16 + move);
+			cout << arr[i].maMonHoc;
+			gotoxy(22, 16 + move);
+			cout << p->monHoc.tenMonHoc;
+			gotoxy(65, 16 + move);
+			cout << arr[i].svMax;
+			gotoxy(75, 16 + move);
+			cout << p->monHoc.soTCLT;
+			gotoxy(84, 16 + move);
+			cout << p->monHoc.soTCTH;
+
+			gotoxy(1, 1);
+			cout << i << "  " << move;
+		}
+		if (key == UP) {
+			move--;
+			if (move < 1) {
+				move = 0;
+			}
+			if (move > count - 1) {
+				move = count - 1;
+			}
+			i = 15 * trang + move;
+
+			if (i + 1 < count) {           // i + 1 < count để UP 1 phần tử không bị lỗi vì không có phần tử sau nó
+				p = CheckTrungMMH(tree, arr[i + 1].maMonHoc);
+			}
+
+			if (move + 1 <= 15) {
+				if (i + 1 < count) {      //Ngan bug 1 slot o trang
+					SetColor(5);
+					SetBGColor(7);
+					gotoxy(10, 16 + move + 1);
+					cout << "|          |                                        |        |        |        |";
+
+					SetColor(1);
+					SetBGColor(7);
+					gotoxy(11, 16 + move + 1);
+					cout << arr[i + 1].maMonHoc;
+					gotoxy(22, 16 + move + 1);
+					cout << p->monHoc.tenMonHoc;
+					gotoxy(65, 16 + move + 1);
+					cout << arr[i + 1].svMax;
+					gotoxy(75, 16 + move + 1);
+					cout << p->monHoc.soTCLT;
+					gotoxy(84, 16 + move + 1);
+					cout << p->monHoc.soTCTH;
+
+					gotoxy(1, 1);
+					cout << i << "  " << move;
+				}
+			}
+			p = CheckTrungMMH(tree, arr[i].maMonHoc);
+			SetBGColor(15);
+			SetColor(3);
+			gotoxy(10, 16 + move);
+			cout << "                                                                                ";
+			SetColor(4);
+			gotoxy(11, 16 + move);
+			cout << arr[i].maMonHoc;
+			gotoxy(22, 16 + move);
+			cout << p->monHoc.tenMonHoc;
+			gotoxy(65, 16 + move);
+			cout << arr[i].svMax;
+			gotoxy(75, 16 + move);
+			cout << p->monHoc.soTCLT;
+			gotoxy(84, 16 + move);
+			cout << p->monHoc.soTCTH;
+
+			gotoxy(1, 1);
+			cout << i << "  " << move;
+		}
+		if (key == ENTER && p != NULL) {
+			if (CheckExist(arrXacNhan, arr[move + trang * 15].maLopTinChi)) {          //Vì move chỉ từ 0~14
+				LuuLuaChon(arrXacNhan, arr[move + trang * 15].maLopTinChi, "XOA");
+			} else {
+				LuuLuaChon(arrXacNhan, arr[move + trang * 15].maLopTinChi, "THEM");
+			}
+			LopTinChiDaChon(ds_ltc, arrXacNhan, 0, "UPDATE");
+			KhungChonLopTinChi();
+			goto RELOAD;
+		}
+		if (key == LEFT && trang > 0) {
+			trang--;
+			move = 0;
+			KhungChonLopTinChi();
+			goto RELOAD;
+		}
+		if (key == RIGHT && trang < tongTrang - 1) {
+			trang++;
+			move = 0;
+			KhungChonLopTinChi();
+			goto RELOAD;
+		}
+		if (key == F4) {
+			LopTinChiDaChon(ds_ltc, arrXacNhan, 0, "CONTROL");
+			LopTinChiDaChon(ds_ltc, arrXacNhan, 0, "UPDATE");
+			goto RESET;
+		}
+		if (key == ESC) {
+			KhungChonLopTinChi();
+			delete[] arr;
+			return;
+		}
+	}
+
+	return;
+}
+
+void TimKiemLopTinChi(DS_LopTinChi& ds_ltc) {
+	KhungTimKiem();
+	TongleTimKiem(false);
+
+	//Mảng chứa các mã lớp tín chỉ đã được click chọn đăng ký (chưa lưu vào csdl), 50 số 0 by default
+	int arrXacNhan[50] = {};
+
+	int key, vitri = 0;
+
+	int hocKy = 0; int nienKhoa = 0;
+	char nienKhoa_ch[5];
+	nienKhoa_ch[0] = '\0';
+	char hocKy_ch[3];
+	hocKy_ch[0] = '\0';
+
+NIENKHOA:
+	//Ghi chu
+	SetColor(4);
+	SetBGColor(15);
+	gotoxy(18, 28);
+	cout << "                                                           ";
+	gotoxy(18, 29);
+	cout << "    NIEN KHOA: GOM CAC KI TU (0-9), TOI THIEU: 4 KI TU     ";
+	gotoxy(18, 30);
+	cout << "                                                           ";
+
+	while (true) {
+		SetColor(3);
+		SetBGColor(7);
+		gotoxy(18 + vitri, 8);
+		key = GetKey();
+		if (key >= '0' && key <= '9' && vitri < 4) {
+			if (key == '0' && vitri == 0) {
+				Alert("Nien Khoa Khong Duoc Bat Dau Bang So 0 ", 34, 26, 4, 900);
+				continue;
+			}
+			nienKhoa_ch[vitri] = (char)key;
+			cout << nienKhoa_ch[vitri];
+			vitri++;
+		}
+		if (key == BACKSPACE && vitri > 0) {
+			vitri--;
+			gotoxy(18 + vitri, 8);
+			cout << " ";
+		}
+		if (key == RIGHT || key == ENTER) {
+			nienKhoa_ch[vitri] = '\0';
+			if (nienKhoa_ch[0] == '\0' || strlen(nienKhoa_ch) < 4) {
+				Alert("Nien Khoa Chua Nhap", 34, 26, 4, 900);
+				continue;
+			}
+
+			//Convert char[] to int (Nien Khoa)
+			string nienKhoa_str(nienKhoa_ch);
+			stringstream geek(nienKhoa_str);
+			geek >> nienKhoa;
+			//
+
+			vitri = (hocKy > 9) ? 2 : (hocKy == 0) ? 0 : 1;
+			gotoxy(40 + vitri, 8);
+			goto HOCKY;
+		}
+
+		if (key == ESC) {
+			clrscr();
+			return;
+		}
+	}
+HOCKY:
+	//Ghi chu
+	SetColor(4);
+	SetBGColor(15);
+	gotoxy(18, 28);
+	cout << "                                                           ";
+	gotoxy(18, 29);
+	cout << "        HOC KY: GOM CAC SO (0-9), TOI DA: 2 KI TU          ";
+	gotoxy(18, 30);
+	cout << "                                                           ";
+
+	while (true) {
+		SetColor(3);
+		SetBGColor(7);
+		gotoxy(40 + vitri, 8);
+		key = GetKey();
+		if (key >= '0' && key <= '9' && vitri < 2) {
+			if (key == '0' && vitri == 0) {
+				Alert("So Hoc Ky Khong Duoc Bat Dau Bang So 0 ", 34, 26, 4, 900);
+				continue;
+			}
+			hocKy_ch[vitri] = (char)key;
+			cout << hocKy_ch[vitri];
+			vitri++;
+		}
+		if (key == BACKSPACE && vitri > 0) {
+			vitri--;
+			gotoxy(40 + vitri, 8);
+			cout << " ";
+		}
+		if (key == LEFT) {
+			hocKy_ch[vitri] = '\0';
+			if (hocKy_ch[0] == '\0') {
+				Alert("Hoc Ky Chua Nhap", 34, 26, 4, 900);
+				continue;
+			}
+
+			//Convert char to int (Hoc Ky)
+			string hocKy_str(hocKy_ch);
+			stringstream geek(hocKy_str);
+			geek >> hocKy;
+			//
+
+			vitri = strlen(nienKhoa_ch); //Nien Khoa Set Bat Buoc 4 So
+			gotoxy(18 + vitri, 8);
+			goto NIENKHOA;
+		}
+
+		if (key == RIGHT || key == ENTER) {
+			hocKy_ch[vitri] = '\0';
+			if (hocKy_ch[0] == '\0') {
+				Alert("Hoc Ky Chua Nhap", 34, 26, 4, 900);
+				continue;
+			}
+
+			//Convert char to int (Hoc Ky)
+			string hocKy_str(hocKy_ch);
+			stringstream geek(hocKy_str);
+			geek >> hocKy;
+			//
+
+			goto OK;
+		}
+		if (key == ESC) {
+			clrscr();
+			return;
+		}
+	}
+OK:
+	bool choice = true;
+	TongleTimKiem(choice);
+	while (true) {
+		key = GetKey();
+		if (key == LEFT) {
+			choice = !choice;
+			TongleTimKiem(choice);
+			vitri = (hocKy > 9) ? 2 : (hocKy == 0) ? 0 : 1;
+			gotoxy(40 + vitri, 8);
+			goto HOCKY;
+		}
+		if (key == ENTER) {
+			ChonLopTinChi(ds_ltc, hocKy, nienKhoa, arrXacNhan);
+			//Restart
+			nienKhoa = 0;
+			nienKhoa_ch[0] = '\0';
+			hocKy = 0;
+			hocKy_ch[0] = '\0';
+			vitri = 0;
+			KhungTimKiem();
+			goto NIENKHOA;
+		}
+	}
+	return;
+}
+
+void DangKyLopTinCHi(DS_LopTinChi& ds_ltc) {
+	KhungDangNhap();
+	TongleDangNhap();
+	//KhungTimKiem();
+
+	int key, vitri = 0;
+	char maSV[12];
+	maSV[0] = '\0';
+
+
+MASV:
+	//Ghi chu
+	SetColor(4);
+	SetBGColor(15);
+	gotoxy(18, 38);
+	cout << "                                                           ";
+	gotoxy(18, 39);
+	cout << "    MA SV: GOM CAC KI TU (A-Z) & (0-9),TOI DA: 11 KI TU    ";
+	gotoxy(18, 40);
+	cout << "                                                           ";
+
+	while (true) {
+		//Nhap Ma Sinh Vien
+		SetColor(3);
+		SetBGColor(7);
+		gotoxy(15 + vitri, 8);
+		key = GetKey();
+
+		if (((key >= 'A' && key <= 'Z') || (key >= 'a' && key <= 'z') || (key <= '9' && key >= '0')) && (vitri < 11)) {
+			maSV[vitri] = toupper((char)key);
+			cout << maSV[vitri];
+			vitri++;
+		}
+		if (key == BACKSPACE && vitri > 0) {
+			vitri--;
+			gotoxy(15 + vitri, 8);
+			cout << " ";
+		}
+		if (key == RIGHT || key == ENTER) {
+			maSV[vitri] = '\0';
+			if (maSV[0] == '\0') {
+				continue;
+			}
+			goto OK;
+		}
+		if (key == ESC) {
+			clrscr();
+			return;
+		}
+	}
+OK:
+	TongleDangNhap(true);
+	bool choice = true;
+	while (true) {
+		key = GetKey();
+		if (key == LEFT) {
+			choice = !choice;
+			vitri = strlen(maSV);
+			TongleDangNhap(choice);
+			goto MASV;
+		}
+		if (key == ENTER) {
+			if (CheckTrungMSSV(maSV, maSV) == 1) {            //Hàm phải bỏ vào mã lớp mặc dù không cần
+				TimKiemLopTinChi(ds_ltc);
+			}
+		}
+		if (key == ESC) {
+			clrscr();
+			return;
+		}
+	}
+	return;
+}
+
+
+//-------------------------------------------KET THUC DANG KY MON HOC------------------------------------------------
 
 
 
@@ -4575,7 +5508,7 @@ void XoaMonHoc() {
 char thucdon[4][50] = { "  QUAN LY LOP TIN CHI   ",
 						"  QUAN LY SINH VIEN     ",
 						"  QUAN LY MON HOC       ",
-						"    XXX                 " };
+						"  DANG KY LOP TIN CHI   " };
 char MenuMoLopTinChi[5][50] = { " TAO LOP TIN CHI MOI    ",
 								" CHINH SUA LOP TIN CHI  ",
 								" IN DANH SACH DANG KY   ",
@@ -4587,8 +5520,9 @@ char MenuQuanLySinhVien[5][50] = { " THEM SINH VIEN         ",
 								   " IN DANH SACH SINH VIEN ",
 								   " LUU FILE SINH VIEN     " };
 char MenuQuanLyMonHoc[5][50] = { " THEM MON HOC           ",
-								 " XXXXXXXXXXXXXXXXXXX    ",
-								 " XXXXXXXXXXXXXXXXXXX    ",
+								 " XOA MON HOC            ",
+								 " SUA MON HOC            ",
+								 " IN DANH SACH MON HOC   ",
 								 " LUU DANH SACH MON HOC  " };
 
 void ToMauMenuChinh(int textColor, int bGColor, int vitri) {
@@ -4764,7 +5698,7 @@ void RootMenu(DS_LopTinChi& ds_ltc, DS_DangKy& ds_dk, DS_SinhVien& ds_sv) {
 			}
 			break;
 		case 3:
-			for (int i = 0; i < 4; i++) {
+			for (int i = 0; i < 5; i++) {
 				if (i == 0) {
 					SetColor(4);
 					SetBGColor(14);
@@ -4776,7 +5710,7 @@ void RootMenu(DS_LopTinChi& ds_ltc, DS_DangKy& ds_dk, DS_SinhVien& ds_sv) {
 				gotoxy(28, 6 + (i + 1) * 4);	cout << MenuQuanLyMonHoc[i];
 				gotoxy(28, 7 + (i + 1) * 4);	cout << "                        ";
 			}
-			choiceMenuCon = MenuCon(4, MenuQuanLyMonHoc);     // item la so chuc nang cua lop con
+			choiceMenuCon = MenuCon(5, MenuQuanLyMonHoc);     // item la so chuc nang cua lop con
 			SetBGColor(7);
 			clrscr();
 			switch (choiceMenuCon) {
@@ -4787,11 +5721,21 @@ void RootMenu(DS_LopTinChi& ds_ltc, DS_DangKy& ds_dk, DS_SinhVien& ds_sv) {
 				ChinhSuaMonHoc("sua");
 				break;
 			case 3:
+				XoaMonHoc();
 				break;
 			case 4:
+				InDSMH();
+				break;
+			case 5:
 				LuuDSMH();
 				break;
 			}
+			break;
+		case 4:
+			clrscr();
+			DangKyLopTinCHi(ds_ltc);
+			break;
+		case 5:
 			break;
 		}
 	}

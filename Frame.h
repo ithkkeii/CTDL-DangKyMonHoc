@@ -1,4 +1,4 @@
-#include <windows.h>
+﻿#include <windows.h>
 #include <stdio.h>	
 #include <conio.h>	
 #define LEFT -75	
@@ -688,6 +688,7 @@ void KhungThemSinhVien() {
 	gotoxy(0, 27);*/
 	return;
 }
+
 void TurnOKButton(bool state) {
 	if (state) {
 		SetColor(4);
@@ -702,6 +703,7 @@ void TurnOKButton(bool state) {
 	}
 	return;
 }
+
 void KhungDSachSV() {
 	gotoxy(0, 12);
 	SetColor(5);
@@ -747,6 +749,7 @@ void KhungDSachSV() {
 	gotoxy(84, 18);
 	cout << "GIOI";
 }
+
 void KhungXoaSinhVien() {
 	gotoxy(8, 4);
 	SetColor(5);
@@ -774,7 +777,8 @@ void KhungXoaSinhVien() {
 
 	return;
 }
-void ButtonXacNhanXoaSV(bool choice = false) {
+
+void ButtonXacNhanXoa(bool choice = false) {
 	SetBGColor(6);
 	SetColor(15);
 	gotoxy(38, 10);
@@ -957,7 +961,8 @@ void KhungThemMonHoc(string choice = "them") {
 	cout << " OK ";
 	return;
 }
-void KhungDSMonHoc() {
+
+void KhungDSMonHoc(string choice = "") {
 	gotoxy(0, 10);
 	SetColor(5);
 	SetBGColor(7);
@@ -992,6 +997,15 @@ void KhungDSMonHoc() {
 	gotoxy(74, 12);
 	cout << "T.CHI TH";
 
+	if (choice == "IN") {
+		SetColor(4);
+		gotoxy(33, 1);
+		cout << "    ----------------------    ";
+		gotoxy(33, 2);
+		cout << "    |IN DANH SACH MON HOC|    ";
+		gotoxy(33, 3);
+		cout << "    ----------------------    ";
+	}
 
 	return;
 }
@@ -1045,8 +1059,267 @@ void TurnOKButtonKhungMonHoc(bool state) {
 	}
 	return;
 }
+
+void TurnOKButtonKhungXoaMonHoc(bool state) {
+	if (state) {
+		SetColor(4);
+		SetBGColor(2);
+		gotoxy(63, 6);
+		cout << " OK ";
+	} else {
+		SetColor(15);
+		SetBGColor(8);
+		gotoxy(63, 6);
+		cout << " OK ";
+	}
+	return;
+}
+
+void KhungXoaMonHoc() {
+	SetColor(5);
+	SetBGColor(7);
+	gotoxy(10, 4);
+	cout << "                           +--------------------+";
+	gotoxy(10, 5);
+	cout << "                           |                    |   ------";
+	gotoxy(10, 6);
+	cout << "                           +--------------------+   |    |";
+	gotoxy(10, 7);
+	cout << "                           |                    |   ------";
+	gotoxy(10, 8);
+	cout << "                           |--------------------|";
+
+	SetColor(4);
+	gotoxy(33, 1);
+	cout << "    ----------------------    ";
+	gotoxy(33, 2);
+	cout << "    |    XOA MON HOC     |    ";
+	gotoxy(33, 3);
+	cout << "    ----------------------    ";
+
+	SetColor(1);
+	SetBGColor(7);
+	gotoxy(42, 5);
+	cout << "MA MON HOC";
+
+	SetColor(15);
+	SetBGColor(8);
+	gotoxy(63, 6);
+	cout << " OK ";
+	return;
+}
+
+void HuongDanInDSMH() {
+	gotoxy(12, 36);
+	SetColor(15);
+	SetBGColor(4);
+	cout << " ESC ";
+	SetColor(1);
+	SetBGColor(7);
+	cout << ":Exit";
+
+	gotoxy(27, 36);
+	SetColor(15);
+	SetBGColor(6);
+	cout << " CONTROL ";
+	SetColor(1);
+	SetBGColor(7);
+	cout << ":LEFT-RIGHT";
+	return;
+}
 //----------------------
 
+//Khung đăng ký môn học
+void KhungDangNhap() {
+	SetColor(4);
+	gotoxy(33, 1);
+	cout << "    ----------------------    ";
+	gotoxy(33, 2);
+	cout << "    |  DANG KY MON HOC   |    ";
+	gotoxy(33, 3);
+	cout << "    ----------------------    ";
+
+	SetColor(3);
+	gotoxy(10, 5);
+	cout << "+--------------------+";
+	gotoxy(10, 6);
+	cout << "|                    |     +-----------+";
+	gotoxy(10, 7);
+	cout << "+--------------------+     |           |";
+	gotoxy(10, 8);
+	cout << "|                    |     +-----------+";
+	gotoxy(10, 9);
+	cout << "+--------------------+";
+
+	SetColor(5);
+	gotoxy(15, 6);
+	cout << "MA SINH VIEN";
+	gotoxy(39, 7);
+	cout << "DANG NHAP";
+
+	return;
+}
+
+void KhungTimKiem() {
+	SetBGColor(7);
+	SetColor(3);
+	gotoxy(10, 5);
+	cout << "+--------------------+--------------------+";
+	gotoxy(10, 6);
+	cout << "|                    |                    |     +-----------+";
+	gotoxy(10, 7);
+	cout << "+--------------------+--------------------+     |           |";
+	gotoxy(10, 8);
+	cout << "|                    |                    |     +-----------+";
+	gotoxy(10, 9);
+	cout << "+--------------------+--------------------+";
+
+	SetColor(5);
+	gotoxy(16, 6);
+	cout << "NIEN KHOA";
+	gotoxy(39, 6);
+	cout << "HOC KY";
+	gotoxy(60, 7);
+	cout << "TIM KIEM";
+
+	return;
+}
+
+void TongleDangNhap(bool choice = false) {
+	if (choice) {
+		SetColor(15);
+		SetBGColor(2);
+		gotoxy(38, 7);
+		cout << " DANG NHAP ";
+	}
+	if (!choice) {
+		SetColor(15);
+		SetBGColor(8);
+		gotoxy(38, 7);
+		cout << " DANG NHAP ";
+	}
+}
+
+void TongleTimKiem(bool choice = false) {
+	if (choice) {
+		SetColor(15);
+		SetBGColor(2);
+		gotoxy(59, 7);
+		cout << " TIM KIEM  ";
+	}
+	if (!choice) {
+		SetColor(15);
+		SetBGColor(8);
+		gotoxy(59, 7);
+		cout << " TIM KIEM  ";
+	}
+	return;
+}
+
+void KhungChonLopTinChi() {
+	gotoxy(0, 12);
+	SetColor(5);
+	SetBGColor(7);
+	cout << "\n          +------------------------------------------------------------------------------+";
+	cout << "\n          |          |                                        |        |        |        |";
+	cout << "\n          +----------+----------------------------------------+--------+--------+--------|";
+	cout << "\n          |          |                                        |        |        |        |";
+	cout << "\n          |          |                                        |        |        |        |";
+	cout << "\n          |          |                                        |        |        |        |";
+	cout << "\n          |          |                                        |        |        |        |";
+	cout << "\n          |          |                                        |        |        |        |";
+	cout << "\n          |          |                                        |        |        |        |";
+	cout << "\n          |          |                                        |        |        |        |";
+	cout << "\n          |          |                                        |        |        |        |";
+	cout << "\n          |          |                                        |        |        |        |";
+	cout << "\n          |          |                                        |        |        |        |";
+	cout << "\n          |          |                                        |        |        |        |";
+	cout << "\n          |          |                                        |        |        |        |";
+	cout << "\n          |          |                                        |        |        |        |";
+	cout << "\n          |          |                                        |        |        |        |";
+	cout << "\n          |          |                                        |        |        |        |";
+	cout << "\n          |----------|-------------------------------------------------------------------|";
+	cout << "\n                                                                                 +       +";
+	cout << "\n                                                                                 +-------+";
+
+	SetColor(6);
+	gotoxy(11, 14);
+	cout << "MA MON HOC";
+	gotoxy(30, 14);
+	cout << "TEN MON HOC";
+	gotoxy(65, 14);
+	cout << "SVMAX";
+	gotoxy(72, 14);
+	cout << "T.CHI LT";
+	gotoxy(81, 14);
+	cout << "T.CHI TH";
 
 
+
+
+
+
+	return;
+}
+
+void KhungLuuLuaChon() {
+	int x = 95;
+	int y = 13;
+	SetColor(5);
+	SetBGColor(7);
+	gotoxy(x, y);
+	cout << "+---------------------------------------------------------------------+";
+	gotoxy(x, y + 1);
+	cout << "|          |                                        |        |        |";
+	gotoxy(x, y + 2);
+	cout << "+----------+----------------------------------------+--------+--------|";
+	gotoxy(x, y + 3);
+	cout << "|          |                                        |        |        |";
+	gotoxy(x, y + 4);
+	cout << "|          |                                        |        |        |";
+	gotoxy(x, y + 5);
+	cout << "|          |                                        |        |        |";
+	gotoxy(x, y + 6);
+	cout << "|          |                                        |        |        |";
+	gotoxy(x, y + 7);
+	cout << "|          |                                        |        |        |";
+	gotoxy(x, y + 8);
+	cout << "|          |                                        |        |        |";
+	gotoxy(x, y + 9);
+	cout << "|          |                                        |        |        |";
+	gotoxy(x, y + 10);
+	cout << "|          |                                        |        |        |";
+	gotoxy(x, y + 11);
+	cout << "|          |                                        |        |        |";
+	gotoxy(x, y + 12);
+	cout << "|          |                                        |        |        |";
+	gotoxy(x, y + 13);
+	cout << "|          |                                        |        |        |";
+	gotoxy(x, y + 14);
+	cout << "|          |                                        |        |        |";
+	gotoxy(x, y + 15);
+	cout << "|          |                                        |        |        |";
+	gotoxy(x, y + 16);
+	cout << "|          |                                        |        |        |";
+	gotoxy(x, y + 17);
+	cout << "|          |                                        |        |        |";
+	gotoxy(x, y + 18);
+	cout << "|----------|----------------------------------------------------------|";
+	gotoxy(x, y + 19);
+	cout << "                                                              +       +";
+	gotoxy(x, y + 20);
+	cout << "                                                              +-------+";
+
+	SetColor(6);
+	gotoxy(96, 14);
+	cout << "MA MON HOC";
+	gotoxy(120, 14);
+	cout << "TEN MON HOC";
+	gotoxy(148, 14);
+	cout << "T.CHI LT";
+	gotoxy(157, 14);
+	cout << "T.CHI TH";
+}
+
+//---------------------
 
