@@ -23,9 +23,6 @@
     <ClInclude Include="Frame.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Raw.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="Mylib.h">
       <Filter>Source Files</Filter>
     </ClInclude>

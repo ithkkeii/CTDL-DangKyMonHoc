@@ -116,7 +116,7 @@ void Alert(string str, int x, int y, int color, int sleep, int bgColor = 7) {
 	std::cout << str;
 	Sleep(sleep);
 	gotoxy(x, y);
-	std::cout << "                                        ";
+	std::cout << "                                             ";
 }
 
 //Lay thong tin phim nhan

@@ -157,7 +157,6 @@
   <ItemGroup>
     <ClInclude Include="Frame.h" />
     <ClInclude Include="Mylib.h" />
-    <ClInclude Include="Raw.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="DSDK.txt" />
