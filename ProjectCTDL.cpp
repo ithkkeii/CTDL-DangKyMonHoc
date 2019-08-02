@@ -4026,8 +4026,11 @@ void PhanTrangDSMonHoc(DS_MonHoc* p, int& trang, string choice = "") {
 	//Sắp xếp Selection Sort cho mảng
 	SelectionSortDSMH(mhArrSort, tongMonHoc);
 
-	if (tongMonHoc == 0)
+	if (tongMonHoc == 0) {
+		delete[] mhArr;
+		delete[] mhArrSort;
 		return;
+	}
 
 	tongTrang = ((tongMonHoc - 1) / 15 + 1);
 	if (choice == "F3" && trang < (tongTrang - 1)) {
@@ -4078,6 +4081,10 @@ void PhanTrangDSMonHoc(DS_MonHoc* p, int& trang, string choice = "") {
 			gotoxy(74, 14 + (i - trang * 15));
 			cout << mhArr[i].soTCTH;
 		}
+
+
+	delete[] mhArr;
+	delete[] mhArrSort;
 	return;
 }
 
@@ -4735,7 +4742,16 @@ DS_MonHoc* Remove(DS_MonHoc*& p, char maMonHoc[]) {
 	return p;
 }
 
-void XoaMonHoc() {
+//Check có lớp tín chỉ sử dụng mã môn hay không
+int IsUsed(DS_LopTinChi& ds_ltc, char maMonhoc[]) {
+	for (int i = 0; i < ds_ltc.soLuong; i++) {
+		if (strcmp(ds_ltc.ds[i]->maMonHoc, maMonhoc) == 0)
+			return 1;
+	}
+	return 0;
+}
+
+void XoaMonHoc(DS_LopTinChi& ds_ltc) {
 	KhungXoaMonHoc();
 	KhungDSMonHoc();
 	HuongDanThemMonHoc();
@@ -4812,18 +4828,21 @@ OK:
 						goto MaMonHoc;
 					}
 					if (choice == true) {
-						Remove(tree, maMonHoc);
+						if (IsUsed(ds_ltc, maMonHoc)) {
+							Alert("Khong The Xoa!!!", 40, 9, 4, 900);
+						} else {
+							Remove(tree, maMonHoc);
+							Alert("Da Xoa Mon Hoc Thanh Cong!!!", 40, 9, 2, 900);
+						}
 						//restart
 						SetBGColor(7);
 						gotoxy(38, 10);
 						cout << "                      ";
-
 						vitri = 0;
 						maMonHoc[0] = '\0';
 						KhungXoaMonHoc();
 						KhungDSMonHoc();
 						PhanTrangDSMonHoc(tree, trang);
-						Alert("Da Xoa Mon Hoc Thanh Cong!!!", 30, 9, 2, 900);
 						goto MaMonHoc;
 					}
 				}
@@ -4840,6 +4859,27 @@ OK:
 		}
 		if (key == F2) {
 			PhanTrangDSMonHoc(tree, trang, "F2");
+		}
+		if (key == ESC) {
+			clrscr();
+			return;
+		}
+	}
+	return;
+}
+
+void InDSMH() {
+	KhungDSMonHoc("IN");
+	int key, trang = 0;
+	PhanTrangDSMonHoc(tree, trang, "SORT");
+	HuongDanInDSMH();
+	while (true) {
+		key = GetKey();
+		if (key == LEFT) {
+			PhanTrangDSMonHoc(tree, trang, "F2SORT");
+		}
+		if (key == RIGHT) {
+			PhanTrangDSMonHoc(tree, trang, "F3SORT");
 		}
 		if (key == ESC) {
 			clrscr();
@@ -4875,26 +4915,6 @@ DS_MonHoc* Delete(DS_MonHoc* root, int value) {
 	return root;
 }
 
-void InDSMH() {
-	KhungDSMonHoc("IN");
-	int key, trang = 0;
-	PhanTrangDSMonHoc(tree, trang, "SORT");
-	HuongDanInDSMH();
-	while (true) {
-		key = GetKey();
-		if (key == LEFT) {
-			PhanTrangDSMonHoc(tree, trang, "F2SORT");
-		}
-		if (key == RIGHT) {
-			PhanTrangDSMonHoc(tree, trang, "F3SORT");
-		}
-		if (key == ESC) {
-			clrscr();
-			return;
-		}
-	}
-	return;
-}
 //---------------------------------------------KET THUC QUAN LY MON HOC----------------------------------------------------
 
 //-----------------------------------------------DANG KY MON HOC-----------------------------------------------------------
@@ -5025,10 +5045,12 @@ int LopTinChiDaChon(DS_LopTinChi& ds_ltc, int arrXacNhan[], int arrCam[], LopTin
 			cout << p->monHoc.maMonHoc;
 			gotoxy(110, 16 + i - 15 * trang);
 			cout << p->monHoc.tenMonHoc;
-			gotoxy(152, 16 + i - 15 * trang);
+			gotoxy(149, 16 + i - 15 * trang);
 			cout << p->monHoc.soTCLT;
-			gotoxy(161, 16 + i - 15 * trang);
+			gotoxy(155, 16 + i - 15 * trang);
 			cout << p->monHoc.soTCTH;
+			gotoxy(161, 16 + i - 15 * trang);
+			cout << arr[i].nhom;
 			gotoxy(160, 32);
 			cout << trang + 1 << "/" << tongTrang;
 		}
@@ -5069,13 +5091,12 @@ RELOAD:
 			cout << p->monHoc.maMonHoc;
 			gotoxy(110, 16 + move);
 			cout << p->monHoc.tenMonHoc;
-			gotoxy(152, 16 + move);
+			gotoxy(149, 16 + move);
 			cout << p->monHoc.soTCLT;
-			gotoxy(161, 16 + move);
+			gotoxy(155, 16 + move);
 			cout << p->monHoc.soTCTH;
-
-			gotoxy(1, 1);
-			cout << i << "  " << move;
+			gotoxy(161, 16 + move);
+			cout << arr[i].nhom;
 		}
 
 		while (true) {
@@ -5100,19 +5121,18 @@ RELOAD:
 					SetColor(5);
 					SetBGColor(7);
 					gotoxy(95, 16 + move - 1);
-					cout << "|          |                                        |        |        |";
+					cout << "|          |                                        |     |     |     |";
 					SetColor(1);
 					gotoxy(96, 16 + move - 1);
 					cout << p->monHoc.maMonHoc;
 					gotoxy(110, 16 + move - 1);
 					cout << p->monHoc.tenMonHoc;
-					gotoxy(152, 16 + move - 1);
+					gotoxy(149, 16 + move - 1);
 					cout << p->monHoc.soTCLT;
-					gotoxy(161, 16 + move - 1);
+					gotoxy(155, 16 + move - 1);
 					cout << p->monHoc.soTCTH;
-
-					gotoxy(1, 1);
-					cout << i << "  " << move;
+					gotoxy(161, 16 + move - 1);
+					cout << arr[i - 1].nhom;
 				}
 				strcpy_s(x, TimMMH(ds_ltc, arrXacNhan[i]).c_str());
 				p = CheckTrungMMH(tree, x);
@@ -5125,13 +5145,12 @@ RELOAD:
 				cout << p->monHoc.maMonHoc;
 				gotoxy(110, 16 + move);
 				cout << p->monHoc.tenMonHoc;
-				gotoxy(152, 16 + move);
+				gotoxy(149, 16 + move);
 				cout << p->monHoc.soTCLT;
-				gotoxy(161, 16 + move);
+				gotoxy(155, 16 + move);
 				cout << p->monHoc.soTCTH;
-
-				gotoxy(1, 1);
-				cout << i << "  " << move;
+				gotoxy(161, 16 + move);
+				cout << arr[i].nhom;
 			}
 			if (key == UP) {
 				move--;
@@ -5153,19 +5172,18 @@ RELOAD:
 						SetColor(5);
 						SetBGColor(7);
 						gotoxy(95, 16 + move + 1);
-						cout << "|          |                                        |        |        |";
+						cout << "|          |                                        |     |     |     |";
 						SetColor(1);
 						gotoxy(96, 16 + move + 1);
 						cout << p->monHoc.maMonHoc;
 						gotoxy(110, 16 + move + 1);
 						cout << p->monHoc.tenMonHoc;
-						gotoxy(152, 16 + move + 1);
+						gotoxy(149, 16 + move + 1);
 						cout << p->monHoc.soTCLT;
-						gotoxy(161, 16 + move + 1);
+						gotoxy(155, 16 + move + 1);
 						cout << p->monHoc.soTCTH;
-
-						gotoxy(1, 1);
-						cout << i << "  " << move;
+						gotoxy(161, 16 + move + 1);
+						cout << arr[i + 1].nhom;
 					}
 				}
 				strcpy_s(x, TimMMH(ds_ltc, arrXacNhan[i]).c_str());
@@ -5179,13 +5197,12 @@ RELOAD:
 				cout << p->monHoc.maMonHoc;
 				gotoxy(110, 16 + move);
 				cout << p->monHoc.tenMonHoc;
-				gotoxy(152, 16 + move);
+				gotoxy(149, 16 + move);
 				cout << p->monHoc.soTCLT;
-				gotoxy(161, 16 + move);
+				gotoxy(155, 16 + move);
 				cout << p->monHoc.soTCTH;
-
-				gotoxy(1, 1);
-				cout << i << "  " << move;
+				gotoxy(161, 16 + move);
+				cout << arr[i].nhom;
 			}
 			if (key == LEFT && trang > 0) {
 				trang--;
@@ -5198,19 +5215,19 @@ RELOAD:
 				goto RELOAD;
 			}
 			if (key == ENTER) {
-				int index = -1;
-				//Check lớp cùng mã môn đã bị cấm để mở cấm cho lớp đó
-				for (int i = 0; i < soLuongLTC; i++) {
-					if (arr[i].maLopTinChi == arrXacNhan[move + trang * 15]) {
-						index = i;
-					}
-				}
-				for (int i = 0; i < soLuongLTC; i++) {
-					if (index != -1 && arr[i].nhom != arr[index].nhom
-						&& strcmp(arr[i].maMonHoc, arr[index].maMonHoc) == 0) {
-						AddOrRemove(arrCam, arr[i].maLopTinChi, "XOA");
-					}
-				}
+				//int index = -1;
+				////Check lớp cùng mã môn đã bị cấm để mở cấm cho lớp đó
+				//for (int i = 0; i < soLuongLTC; i++) {
+				//	if (arr[i].maLopTinChi == arrXacNhan[move + trang * 15]) {
+				//		index = i;
+				//	}
+				//}
+				//for (int i = 0; i < soLuongLTC; i++) {
+				//	if (index != -1 && arr[i].nhom != arr[index].nhom
+				//		&& strcmp(arr[i].maMonHoc, arr[index].maMonHoc) == 0) {
+				//		AddOrRemove(arrCam, arr[i].maLopTinChi, "XOA");
+				//	}
+				//}
 				LuuLuaChon(ds_ltc, mssv, arrXacNhan, arrXacNhan[move + trang * 15], "XOA");
 
 				move = 0;
@@ -5231,6 +5248,7 @@ RELOAD:
 						strcpy_s(newDK->dangKy.maSV, mssv);
 						newDK->next = NULL;
 						ds_ltc.ds[viTriLopTinChi]->head = newDK;
+						//continue;
 						ptr = NULL;
 					}
 					while (ptr != NULL) {
@@ -5264,7 +5282,7 @@ RESET:
 	ButtonKhungLuuLuaChon(false);
 
 	//Count là số lượng lớp tín chỉ phù hợp
-	int count = 0, trang = 0, tongTrang = 0, key;
+	int count = 0, trang = 0, tongTrang = 0, key, soTinChiDangKy = 0;
 	for (int i = 0; i < ds_ltc.soLuong; i++) {
 		if (ds_ltc.ds[i]->hocKy == hocKy && ds_ltc.ds[i]->nienKhoa == nienKhoa)
 			count++;
@@ -5274,6 +5292,7 @@ RESET:
 		//Alert
 		return 2;
 	}
+
 	//Nếu sinh viên đã có mặt tại ít nhất 1 lớp nào đó trong niên khóa + học kỳ thì không đc đăng ký nữa
 	DS_DangKy* s = NULL;
 	for (int i = 0; i < ds_ltc.soLuong; i++) {
@@ -5310,7 +5329,19 @@ RESET:
 
 	//Thanh Sáng, move là vị trí chọn thanh sáng, move bắt đầu từ 0
 	int move = 0;
-
+	//Tính lại tổng tín chỉ đã đăng ký
+	for (int i = 0; i < 50; i++) {
+		DS_MonHoc* temp = NULL;
+		if (arrXacNhan[i] == 0)
+			break;
+		for (int k = 0; k < count; k++) {
+			if (arrXacNhan[i] == arr[k].maLopTinChi) {
+				temp = CheckTrungMMH(tree, arr[k].maMonHoc);
+				soTinChiDangKy += (temp->monHoc.soTCLT + temp->monHoc.soTCTH);
+				break;
+			}
+		}
+	}
 RELOAD:
 	if (count < 15) {
 		tongTrang = 1;
@@ -5327,10 +5358,12 @@ RELOAD:
 		cout << p->monHoc.tenMonHoc;
 		gotoxy(64, 16 + i - trang * 15);
 		cout << DemSoSinhVien1Lop(ds_ltc, arr[i].maLopTinChi) << "/" << arr[i].svMax;
-		gotoxy(75, 16 + i - trang * 15);
+		gotoxy(73, 16 + i - trang * 15);
 		cout << p->monHoc.soTCLT;
-		gotoxy(84, 16 + i - trang * 15);
+		gotoxy(79, 16 + i - trang * 15);
 		cout << p->monHoc.soTCTH;
+		gotoxy(85, 16 + i - trang * 15);
+		cout << arr[i].nhom;
 		gotoxy(84, 32);
 		cout << trang + 1 << "/" << tongTrang;
 
@@ -5344,6 +5377,7 @@ RELOAD:
 			SetBGColor(4);
 			cout << "   ";
 		}
+		TongChi(soTinChiDangKy, 20);
 	}
 
 	//Thanh sáng mặc định ở move 0 
@@ -5362,13 +5396,12 @@ RELOAD:
 		cout << p->monHoc.tenMonHoc;
 		gotoxy(64, 16 + move);
 		cout << DemSoSinhVien1Lop(ds_ltc, arr[i].maLopTinChi) << "/" << arr[i].svMax;
-		gotoxy(75, 16 + move);
+		gotoxy(73, 16 + move);
 		cout << p->monHoc.soTCLT;
-		gotoxy(84, 16 + move);
+		gotoxy(79, 16 + move);
 		cout << p->monHoc.soTCTH;
-
-		gotoxy(1, 1);
-		cout << i << "  " << move;
+		gotoxy(85, 16 + i - trang * 15);
+		cout << arr[i].nhom;
 		//}
 	}
 
@@ -5394,7 +5427,7 @@ RELOAD:
 				SetColor(5);
 				SetBGColor(7);
 				gotoxy(10, 16 + move - 1);
-				cout << "|          |                                        |        |        |        |";
+				cout << "|          |                                        |        |     |     |     |";
 				SetColor(1);
 				gotoxy(11, 16 + move - 1);
 				cout << arr[i - 1].maMonHoc;
@@ -5402,13 +5435,13 @@ RELOAD:
 				cout << p->monHoc.tenMonHoc;
 				gotoxy(64, 16 + move - 1);
 				cout << DemSoSinhVien1Lop(ds_ltc, arr[i - 1].maLopTinChi) << "/" << arr[i - 1].svMax;
-				gotoxy(75, 16 + move - 1);
+				gotoxy(73, 16 + move - 1);
 				cout << p->monHoc.soTCLT;
-				gotoxy(84, 16 + move - 1);
+				gotoxy(79, 16 + move - 1);
 				cout << p->monHoc.soTCTH;
+				gotoxy(85, 16 + move - 1);
+				cout << arr[i - 1].nhom;
 
-				gotoxy(1, 1);
-				cout << i << "  " << move;
 			}
 			p = CheckTrungMMH(tree, arr[i].maMonHoc);
 			SetBGColor(15);
@@ -5422,13 +5455,12 @@ RELOAD:
 			cout << p->monHoc.tenMonHoc;
 			gotoxy(64, 16 + move);
 			cout << DemSoSinhVien1Lop(ds_ltc, arr[i].maLopTinChi) << "/" << arr[i].svMax;
-			gotoxy(75, 16 + move);
+			gotoxy(73, 16 + move);
 			cout << p->monHoc.soTCLT;
-			gotoxy(84, 16 + move);
+			gotoxy(79, 16 + move);
 			cout << p->monHoc.soTCTH;
-
-			gotoxy(1, 1);
-			cout << i << "  " << move;
+			gotoxy(85, 16 + move);
+			cout << arr[i].nhom;
 		}
 		if (key == UP) {
 			move--;
@@ -5449,7 +5481,7 @@ RELOAD:
 					SetColor(5);
 					SetBGColor(7);
 					gotoxy(10, 16 + move + 1);
-					cout << "|          |                                        |        |        |        |";
+					cout << "|          |                                        |        |     |     |     |";
 
 					SetColor(1);
 					SetBGColor(7);
@@ -5459,13 +5491,12 @@ RELOAD:
 					cout << p->monHoc.tenMonHoc;
 					gotoxy(64, 16 + move + 1);
 					cout << DemSoSinhVien1Lop(ds_ltc, arr[i + 1].maLopTinChi) << "/" << arr[i + 1].svMax;
-					gotoxy(75, 16 + move + 1);
+					gotoxy(73, 16 + move + 1);
 					cout << p->monHoc.soTCLT;
-					gotoxy(84, 16 + move + 1);
+					gotoxy(79, 16 + move + 1);
 					cout << p->monHoc.soTCTH;
-
-					gotoxy(1, 1);
-					cout << i << "  " << move;
+					gotoxy(85, 16 + move + 1);
+					cout << arr[i + 1].nhom;
 				}
 			}
 			p = CheckTrungMMH(tree, arr[i].maMonHoc);
@@ -5480,19 +5511,22 @@ RELOAD:
 			cout << p->monHoc.tenMonHoc;
 			gotoxy(64, 16 + move);
 			cout << DemSoSinhVien1Lop(ds_ltc, arr[i].maLopTinChi) << "/" << arr[i].svMax;
-			gotoxy(75, 16 + move);
+			gotoxy(73, 16 + move);
 			cout << p->monHoc.soTCLT;
-			gotoxy(84, 16 + move);
+			gotoxy(79, 16 + move);
 			cout << p->monHoc.soTCTH;
+			gotoxy(85, 16 + move);
+			cout << arr[i].nhom;
 
-			gotoxy(1, 1);
-			cout << i << "  " << move;
 		}
 		if (key == ENTER && p != NULL) {
 			int position = move + trang * 15;    //Vị trí nhấn enter
+			DS_MonHoc* mh = CheckTrungMMH(tree, arr[position].maMonHoc);
 			if (CheckExist(arrXacNhan, arr[position].maLopTinChi)) {          //Vì move chỉ từ 0~14
 				//if (CheckExist(arrCam, arr[move + trang * 15].maLopTinChi) != 1)       //Check Lớp bị cấm đăng ký
 				LuuLuaChon(ds_ltc, mssv, arrXacNhan, arr[position].maLopTinChi, "XOA");
+				soTinChiDangKy -= mh->monHoc.soTCLT + mh->monHoc.soTCTH;
+				TongChi(soTinChiDangKy, 20);
 
 				//Check lớp cùng mã môn đã bị cấm để mở cấm cho lớp đó
 				/*for (int i = 0; i < count; i++) {
@@ -5503,8 +5537,11 @@ RELOAD:
 				}*/
 			} else {
 				if (CheckExist(arrCam, arr[position].maLopTinChi) != 1) {       //Check Lớp bị cấm đăng ký
-					LuuLuaChon(ds_ltc, mssv, arrXacNhan, arr[position].maLopTinChi, "THEM");
-
+					if (soTinChiDangKy + mh->monHoc.soTCLT + mh->monHoc.soTCTH <= 20) {
+						LuuLuaChon(ds_ltc, mssv, arrXacNhan, arr[position].maLopTinChi, "THEM");
+						soTinChiDangKy += mh->monHoc.soTCLT + mh->monHoc.soTCTH;
+						TongChi(soTinChiDangKy, 20);
+					}
 					//Check lớp cùng mã môn để cấm (Vì danh sách lớp trong mảng arr đã là cùng niên khóa + học kỳ rồi)
 					//for (int i = 0; i < count; i++) {
 					//	if (strcmp(arr[i].maMonHoc, arr[position].maMonHoc) == 0     //Cùng mã môn
@@ -5535,8 +5572,10 @@ RELOAD:
 			int style = LopTinChiDaChon(ds_ltc, arrXacNhan, arrCam, arr, count, 0, mssv, "CONTROL");
 			LopTinChiDaChon(ds_ltc, arrXacNhan, arrCam, arr, count, 0, mssv, "UPDATE");
 			ButtonKhungLuuLuaChon(false);
-			if (style == 1)
+			if (style == 1) {
+				delete[] arr;
 				return 0;
+			}
 			goto RESET;
 		}
 		if (key == ESC) {
@@ -5547,7 +5586,7 @@ RELOAD:
 			return 0;
 		}
 	}
-
+	delete[] arr;
 	return 0;
 }
 
@@ -6539,10 +6578,17 @@ void InBangDiemTB(char maLop[], int namNhapHoc, int soLuongSV, DS_SinhVien* p, s
 			cout << point->sinhVien.ho;
 			gotoxy(68, 15 + index);
 			cout << point->sinhVien.ten;
-			gotoxy(78, 15 + index);
-			cout << arrTB[i];
 			gotoxy(79, 31);
 			cout << trang + 1 << "/" << tongTrang;
+
+			gotoxy(78, 15 + index);
+			if (arrTB[i] == "X") {
+				SetColor(4);
+				cout << arrTB[i];
+			} else {
+				SetColor(3);
+				cout << arrTB[i];
+			}
 		}
 		key = GetKey();
 		if (key == LEFT && trang > 0) {
@@ -6589,14 +6635,18 @@ void InBangDiemCaoNhat(char maLop[], int namNhapHoc, int soLuongSV, DS_SinhVien*
 			cout << trangDiem + 1 << "/" << tongTrangDiem;
 		}
 		for (int k = trangDiem * 3; k < 3 + trangDiem * 3 && k < arrMHQDLength; k++) {
+			SetColor(2);
 			gotoxy(80 + (k - trangDiem * 3) * 10, 13);
 			cout << arrMonHocQuyDinh[k];
 			for (int j = trang * 15; j < 15 + trang * 15 && j < soLuongSV; j++) {
 				gotoxy(80 + (k - trangDiem * 3) * 10, 15 + j - trang * 15);
-				if (arrMAX[j][k] == -1)
+				if (arrMAX[j][k] == -1) {
+					SetColor(4);
 					cout << "X";
-				else
+				} else {
+					SetColor(3);
 					cout << arrMAX[j][k];
+				}
 			}
 		}
 		key = GetKey();
@@ -6609,7 +6659,7 @@ void InBangDiemCaoNhat(char maLop[], int namNhapHoc, int soLuongSV, DS_SinhVien*
 		if (key == F2 && trangDiem > 0) {
 			trangDiem--;
 		}
-		if (key == F3 && trangDiem < tongTrang - 1) {
+		if (key == F3 && trangDiem < tongTrangDiem - 1) {
 			trangDiem++;
 		}
 		if (key == ESC)
@@ -6622,6 +6672,7 @@ void InBangDiemCaoNhat(char maLop[], int namNhapHoc, int soLuongSV, DS_SinhVien*
 void TimKiemDiem(DS_LopTinChi& ds_ltc, DS_SinhVien* p, char maLop[], string choice) {
 	//Con trỏ truyền vào hàm InBangDiem
 	DS_SinhVien* pIn = p;
+	int soLuongMonHocQuyDinh = 4;
 	string arrMonHocQuyDinh[4] = {
 		"INT1329",
 		"INT1330",
@@ -6630,7 +6681,7 @@ void TimKiemDiem(DS_LopTinChi& ds_ltc, DS_SinhVien* p, char maLop[], string choi
 	};
 	int tongChi = 0;
 	//Tính tổng chỉ, các mã môn phải chắc đúng, vì là lịch trình học của khóa nên chắc chắn đúng
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < soLuongMonHocQuyDinh; i++) {
 		char maMonHoc[10];
 		strcpy_s(maMonHoc, arrMonHocQuyDinh[i].c_str());
 		DS_MonHoc* s = CheckTrungMMH(tree, maMonHoc);
@@ -6662,10 +6713,10 @@ void TimKiemDiem(DS_LopTinChi& ds_ltc, DS_SinhVien* p, char maLop[], string choi
 	int soLuongSinhVien = DemSoSinhVien1LopHoc(p);
 	float** arrDiem = new float* [soLuongSinhVien];
 	for (int i = 0; i < soLuongSinhVien; ++i)
-		arrDiem[i] = new float[4];
+		arrDiem[i] = new float[soLuongMonHocQuyDinh];
 
 	for (int i = 0; i < soLuongSinhVien; i++) {
-		for (int k = 0; k < 4; k++) {
+		for (int k = 0; k < soLuongMonHocQuyDinh; k++) {
 			arrDiem[i][k] = -1;
 		}
 	}
@@ -6683,7 +6734,7 @@ void TimKiemDiem(DS_LopTinChi& ds_ltc, DS_SinhVien* p, char maLop[], string choi
 	//char maLop[12] = "D16CQCN02";
 	//for (p = first; p != NULL && strcmp(p->sinhVien.maLop, maLop) != 0; p = p->next);
 	while (p != NULL && strcmp(p->sinhVien.maLop, maLop) == 0) {
-		for (int i = 0; i < 4; i++) {         //Những năm thuộc khóa XXXX
+		for (int i = 0; i < soLuongMonHocQuyDinh; i++) {         //Những năm thuộc khóa XXXX
 			for (int k = 0; k < count; k++) {
 				if (strcmp(ds_ltc.ds[arrLop[k]]->maMonHoc, arrMonHocQuyDinh[i].c_str()) == 0) {
 					DS_DangKy* head = ds_ltc.ds[arrLop[k]]->head;
@@ -6707,7 +6758,7 @@ void TimKiemDiem(DS_LopTinChi& ds_ltc, DS_SinhVien* p, char maLop[], string choi
 
 	if (choice == "MAX")
 		//In Bảng Điểm Cao Nhất, đem lên đây vì tính điểm tb * cho A,B,C,D rồi
-		InBangDiemCaoNhat(maLop, namNhapHoc, soLuongSinhVien, pIn, arrDiem, arrMonHocQuyDinh, 4); //4 là số lương môn phải học của ngành, vì đứa mảng vào là thành con trỏ nên khó lấy length đc
+		InBangDiemCaoNhat(maLop, namNhapHoc, soLuongSinhVien, pIn, arrDiem, arrMonHocQuyDinh, soLuongMonHocQuyDinh); //4 là số lương môn phải học của ngành, vì đứa mảng vào là thành con trỏ nên khó lấy length đc
 
 	//Tính điểm trung bình khóa
 	string* tb = new string[soLuongSinhVien];
@@ -6717,26 +6768,26 @@ void TimKiemDiem(DS_LopTinChi& ds_ltc, DS_SinhVien* p, char maLop[], string choi
 		char maMonHoc[10];
 		int soChi = 0;
 		DS_MonHoc* s = NULL;
-		for (int k = 0; k < 4; k++) {
+		for (int k = 0; k < soLuongMonHocQuyDinh; k++) {
 			strcpy_s(maMonHoc, arrMonHocQuyDinh[k].c_str());
 			s = CheckTrungMMH(tree, maMonHoc);
 			soChi = s->monHoc.soTCLT + s->monHoc.soTCTH;
-			if (arrDiem[i][k] > 8.5) {
+			if (arrDiem[i][k] >= 8.5) {
 				arrDiem[i][k] = soChi * 4;
 				diemTB += arrDiem[i][k];
 				continue;
 			}
-			if (arrDiem[i][k] > 7) {
+			if (arrDiem[i][k] >= 7) {
 				arrDiem[i][k] = soChi * 3;
 				diemTB += arrDiem[i][k];
 				continue;
 			}
-			if (arrDiem[i][k] > 5.5) {
+			if (arrDiem[i][k] >= 5.5) {
 				arrDiem[i][k] = soChi * 2;
 				diemTB += arrDiem[i][k];
 				continue;
 			}
-			if (arrDiem[i][k] > 4) {
+			if (arrDiem[i][k] >= 4) {
 				arrDiem[i][k] = soChi * 1;
 				diemTB += arrDiem[i][k];
 				continue;
@@ -7069,10 +7120,10 @@ void RootMenu(DS_LopTinChi& ds_ltc, DS_DangKy& ds_dk, DS_SinhVien& ds_sv) {
 				ChinhSuaMonHoc("them");
 				break;
 			case 2:
-				ChinhSuaMonHoc("sua");
+				XoaMonHoc(ds_ltc);
 				break;
 			case 3:
-				XoaMonHoc();
+				ChinhSuaMonHoc("sua");
 				break;
 			case 4:
 				InDSMH();

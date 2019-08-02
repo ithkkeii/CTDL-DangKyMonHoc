@@ -1319,24 +1319,24 @@ void KhungChonLopTinChi() {
 	SetColor(5);
 	SetBGColor(7);
 	cout << "\n          +------------------------------------------------------------------------------+";
-	cout << "\n          |          |                                        |        |        |        |";
-	cout << "\n    +---+ +----------+----------------------------------------+--------+--------+--------|";
-	cout << "\n    |   | |          |                                        |        |        |        |";
-	cout << "\n    |   | |          |                                        |        |        |        |";
-	cout << "\n    |   | |          |                                        |        |        |        |";
-	cout << "\n    |   | |          |                                        |        |        |        |";
-	cout << "\n    |   | |          |                                        |        |        |        |";
-	cout << "\n    |   | |          |                                        |        |        |        |";
-	cout << "\n    |   | |          |                                        |        |        |        |";
-	cout << "\n    |   | |          |                                        |        |        |        |";
-	cout << "\n    |   | |          |                                        |        |        |        |";
-	cout << "\n    |   | |          |                                        |        |        |        |";
-	cout << "\n    |   | |          |                                        |        |        |        |";
-	cout << "\n    |   | |          |                                        |        |        |        |";
-	cout << "\n    |   | |          |                                        |        |        |        |";
-	cout << "\n    |   | |          |                                        |        |        |        |";
-	cout << "\n    |   | |          |                                        |        |        |        |";
-	cout << "\n    +---+ |----------|-------------------------------------------------------------------|";
+	cout << "\n          |          |                                        |        |     |     |     |";
+	cout << "\n    +---+ +----------+----------------------------------------+--------+-----+-----+-----|";
+	cout << "\n    |   | |          |                                        |        |     |     |     |";
+	cout << "\n    |   | |          |                                        |        |     |     |     |";
+	cout << "\n    |   | |          |                                        |        |     |     |     |";
+	cout << "\n    |   | |          |                                        |        |     |     |     |";
+	cout << "\n    |   | |          |                                        |        |     |     |     |";
+	cout << "\n    |   | |          |                                        |        |     |     |     |";
+	cout << "\n    |   | |          |                                        |        |     |     |     |";
+	cout << "\n    |   | |          |                                        |        |     |     |     |";
+	cout << "\n    |   | |          |                                        |        |     |     |     |";
+	cout << "\n    |   | |          |                                        |        |     |     |     |";
+	cout << "\n    |   | |          |                                        |        |     |     |     |";
+	cout << "\n    |   | |          |                                        |        |     |     |     |";
+	cout << "\n    |   | |          |                                        |        |     |     |     |";
+	cout << "\n    |   | |          |                                        |        |     |     |     |";
+	cout << "\n    |   | |          |                                        |        |     |     |     |";
+	cout << "\n    +---+ |----------|----------------------------------------|--------|-----|-----|-----|";
 	cout << "\n                                                                                 +       +";
 	cout << "\n                                                                                 +-------+";
 
@@ -1348,14 +1348,11 @@ void KhungChonLopTinChi() {
 	gotoxy(65, 14);
 	cout << "SVMAX";
 	gotoxy(72, 14);
-	cout << "T.CHI LT";
-	gotoxy(81, 14);
-	cout << "T.CHI TH";
-
-
-
-
-
+	cout << "TCLT";
+	gotoxy(78, 14);
+	cout << "TCTH";
+	gotoxy(84, 14);
+	cout << "NHOM";
 
 	return;
 }
@@ -1368,41 +1365,41 @@ void KhungLuuLuaChon() {
 	gotoxy(x, y);
 	cout << "+---------------------------------------------------------------------+";
 	gotoxy(x, y + 1);
-	cout << "|          |                                        |        |        |";
+	cout << "|          |                                        |     |     |     |";
 	gotoxy(x, y + 2);
-	cout << "+----------+----------------------------------------+--------+--------|";
+	cout << "+----------+----------------------------------------+-----+-----+-----|";
 	gotoxy(x, y + 3);
-	cout << "|          |                                        |        |        |";
+	cout << "|          |                                        |     |     |     |";
 	gotoxy(x, y + 4);
-	cout << "|          |                                        |        |        |";
+	cout << "|          |                                        |     |     |     |";
 	gotoxy(x, y + 5);
-	cout << "|          |                                        |        |        |";
+	cout << "|          |                                        |     |     |     |";
 	gotoxy(x, y + 6);
-	cout << "|          |                                        |        |        |";
+	cout << "|          |                                        |     |     |     |";
 	gotoxy(x, y + 7);
-	cout << "|          |                                        |        |        |";
+	cout << "|          |                                        |     |     |     |";
 	gotoxy(x, y + 8);
-	cout << "|          |                                        |        |        |";
+	cout << "|          |                                        |     |     |     |";
 	gotoxy(x, y + 9);
-	cout << "|          |                                        |        |        |";
+	cout << "|          |                                        |     |     |     |";
 	gotoxy(x, y + 10);
-	cout << "|          |                                        |        |        |";
+	cout << "|          |                                        |     |     |     |";
 	gotoxy(x, y + 11);
-	cout << "|          |                                        |        |        |";
+	cout << "|          |                                        |     |     |     |";
 	gotoxy(x, y + 12);
-	cout << "|          |                                        |        |        |";
+	cout << "|          |                                        |     |     |     |";
 	gotoxy(x, y + 13);
-	cout << "|          |                                        |        |        |";
+	cout << "|          |                                        |     |     |     |";
 	gotoxy(x, y + 14);
-	cout << "|          |                                        |        |        |";
+	cout << "|          |                                        |     |     |     |";
 	gotoxy(x, y + 15);
-	cout << "|          |                                        |        |        |";
+	cout << "|          |                                        |     |     |     |";
 	gotoxy(x, y + 16);
-	cout << "|          |                                        |        |        |";
+	cout << "|          |                                        |     |     |     |";
 	gotoxy(x, y + 17);
-	cout << "|          |                                        |        |        |";
+	cout << "|          |                                        |     |     |     |";
 	gotoxy(x, y + 18);
-	cout << "|----------|----------------------------------------------------------|";
+	cout << "|----------|----------------------------------------|-----|-----|-----|";
 	gotoxy(x, y + 19);
 	cout << "                                                              +       +";
 	gotoxy(x, y + 20);
@@ -1414,9 +1411,11 @@ void KhungLuuLuaChon() {
 	gotoxy(120, 14);
 	cout << "TEN MON HOC";
 	gotoxy(148, 14);
-	cout << "T.CHI LT";
-	gotoxy(157, 14);
-	cout << "T.CHI TH";
+	cout << "TCLT";
+	gotoxy(154, 14);
+	cout << "TCTH";
+	gotoxy(160, 14);
+	cout << "NHOM";
 }
 
 void ButtonKhungLuuLuaChon(bool choice = false) {
@@ -1522,6 +1521,18 @@ void ButtonKhungLuuLuaChon(bool choice = false) {
 		cout << ":THOAT";
 	}
 
+}
+
+void TongChi(int tinChi, int tinChiMax) {
+	gotoxy(70, 12);
+	SetColor(2);
+	SetBGColor(7);
+	cout << "                       ";
+	gotoxy(70, 12);
+	cout << "Tong Tin Chi: " << tinChi << "/";
+	SetColor(4);
+	cout << tinChiMax;
+	return;
 }
 //---------------------
 
