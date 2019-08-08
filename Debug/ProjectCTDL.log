@@ -11,26 +11,26 @@ E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(99,2): warning C4091:  'typedef ': ign
 E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(114,2): warning C4091:  'typedef ': ignored on left of 'LopTinChi' when no variable is declared
 E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(118,2): warning C4091:  'typedef ': ignored on left of 'DS_LopTinChi' when no variable is declared
 E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(166,16): warning C4553:  '==': result of expression not used; did you intend '='?
-E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(1834,36): warning C4244:  '=': conversion from 'double' to 'float', possible loss of data
-E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(1846,33): warning C4244:  '=': conversion from 'double' to 'float', possible loss of data
-E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(5408,4): warning C4553:  '==': result of expression not used; did you intend '='?
-E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(5952,17): warning C4018:  '<': signed/unsigned mismatch
-E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(5957,21): warning C4018:  '<': signed/unsigned mismatch
-E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(5965,16): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
-E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(6038,18): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
-E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(6082,31): warning C4244:  '=': conversion from 'float' to 'int', possible loss of data
-E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(6093,26): warning C4244:  '=': conversion from 'float' to 'int', possible loss of data
-E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(6117,32): warning C4244:  '=': conversion from 'float' to 'int', possible loss of data
-E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(6129,26): warning C4244:  '=': conversion from 'float' to 'int', possible loss of data
-E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(6141,17): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
-E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(6163,20): warning C4244:  'initializing': conversion from 'double' to 'int', possible loss of data
-E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(6776,27): warning C4244:  '=': conversion from 'int' to 'float', possible loss of data
-E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(6781,27): warning C4244:  '=': conversion from 'int' to 'float', possible loss of data
-E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(6786,27): warning C4244:  '=': conversion from 'int' to 'float', possible loss of data
-E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(6791,27): warning C4244:  '=': conversion from 'int' to 'float', possible loss of data
-E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(6796,27): warning C4244:  '=': conversion from 'int' to 'float', possible loss of data
-E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(7196,12): warning C4101:  'ds_mh': unreferenced local variable
-E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(7196,12): warning C4101: E:\DevC\AAAAA\ProjectCTDL\Mylib.h(22) : warning C4172: returning address of local variable or temporary: S
-E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(7196,12): warning C4101: E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(1898) : warning C4715: 'TimSinhVien': not all control paths return a value
-E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(7196,12): warning C4101: E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(4718) : warning C4715: 'LeftMostValue': not all control paths return a value
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(1888,36): warning C4244:  '=': conversion from 'double' to 'float', possible loss of data
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(1900,33): warning C4244:  '=': conversion from 'double' to 'float', possible loss of data
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(5478,4): warning C4553:  '==': result of expression not used; did you intend '='?
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(6022,17): warning C4018:  '<': signed/unsigned mismatch
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(6027,21): warning C4018:  '<': signed/unsigned mismatch
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(6035,16): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(6107,18): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(6151,31): warning C4244:  '=': conversion from 'float' to 'int', possible loss of data
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(6162,26): warning C4244:  '=': conversion from 'float' to 'int', possible loss of data
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(6186,32): warning C4244:  '=': conversion from 'float' to 'int', possible loss of data
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(6198,26): warning C4244:  '=': conversion from 'float' to 'int', possible loss of data
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(6210,17): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(6232,20): warning C4244:  'initializing': conversion from 'double' to 'int', possible loss of data
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(6845,27): warning C4244:  '=': conversion from 'int' to 'float', possible loss of data
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(6850,27): warning C4244:  '=': conversion from 'int' to 'float', possible loss of data
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(6855,27): warning C4244:  '=': conversion from 'int' to 'float', possible loss of data
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(6860,27): warning C4244:  '=': conversion from 'int' to 'float', possible loss of data
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(6865,27): warning C4244:  '=': conversion from 'int' to 'float', possible loss of data
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(7265,12): warning C4101:  'ds_mh': unreferenced local variable
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(7265,12): warning C4101: E:\DevC\AAAAA\ProjectCTDL\Mylib.h(22) : warning C4172: returning address of local variable or temporary: S
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(7265,12): warning C4101: E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(1952) : warning C4715: 'TimSinhVien': not all control paths return a value
+E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(7265,12): warning C4101: E:\DevC\AAAAA\ProjectCTDL\ProjectCTDL.cpp(4788) : warning C4715: 'LeftMostValue': not all control paths return a value
   ProjectCTDL.vcxproj -> E:\DevC\AAAAA\ProjectCTDL\Debug\ProjectCTDL.exe
