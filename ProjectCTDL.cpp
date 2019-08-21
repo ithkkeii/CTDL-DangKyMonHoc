@@ -286,6 +286,13 @@ MAMONHOC:
 			cout << " ";
 		}
 		if (key == ESC) {
+			//Không xài mã nữa nên add lại vào array
+			for (int i = 0; i < randRage; i++) {
+				if (randArr[i] == 0) {
+					randArr[i] = lopTinChi.maLopTinChi;
+					break;
+				}
+			}
 			system("cls");
 			return;
 		}
@@ -382,6 +389,13 @@ NIENKHOA:
 			goto HOCKY;
 		}
 		if (key == ESC) {
+			//Không xài mã nữa nên add lại vào array
+			for (int i = 0; i < randRage; i++) {
+				if (randArr[i] == 0) {
+					randArr[i] = lopTinChi.maLopTinChi;
+					break;
+				}
+			}
 			clrscr();
 			return;
 		}
@@ -453,6 +467,13 @@ HOCKY:
 			goto NHOM;
 		}
 		if (key == ESC) {
+			//Không xài mã nữa nên add lại vào array
+			for (int i = 0; i < randRage; i++) {
+				if (randArr[i] == 0) {
+					randArr[i] = lopTinChi.maLopTinChi;
+					break;
+				}
+			}
 			clrscr();
 			return;
 		}
@@ -524,6 +545,13 @@ NHOM:
 			goto SVMIN;
 		}
 		if (key == ESC) {
+			//Không xài mã nữa nên add lại vào array
+			for (int i = 0; i < randRage; i++) {
+				if (randArr[i] == 0) {
+					randArr[i] = lopTinChi.maLopTinChi;
+					break;
+				}
+			}
 			clrscr();
 			return;
 		}
@@ -611,6 +639,13 @@ SVMIN:
 			goto SVMAX;
 		}
 		if (key == ESC) {
+			//Không xài mã nữa nên add lại vào array
+			for (int i = 0; i < randRage; i++) {
+				if (randArr[i] == 0) {
+					randArr[i] = lopTinChi.maLopTinChi;
+					break;
+				}
+			}
 			clrscr();
 			return;
 		}
@@ -687,8 +722,16 @@ SVMAX:
 			//
 
 			//Check MaMonHoc + NienKhoa + HocKy + Nhom
-			if (checkSentenceA(ds_ltc, lopTinChi))
+			if (checkSentenceA(ds_ltc, lopTinChi)) {
+				//Không xài mã nữa nên add lại vào array
+				for (int i = 0; i < randRage; i++) {
+					if (randArr[i] == 0) {
+						randArr[i] = lopTinChi.maLopTinChi;
+						break;
+					}
+				}
 				return;
+			}
 
 			//Check SVMAX vs SVMIN
 			if (lopTinChi.svMax < lopTinChi.svMin) {
@@ -711,6 +754,13 @@ SVMAX:
 		}
 
 		if (key == ESC) {
+			//Không xài mã nữa nên add lại vào array
+			for (int i = 0; i < randRage; i++) {
+				if (randArr[i] == 0) {
+					randArr[i] = lopTinChi.maLopTinChi;
+					break;
+				}
+			}
 			clrscr();
 			return;
 		}
@@ -1549,7 +1599,7 @@ RESTART:
 						ds_ltc.soLuong--;
 						Alert("Xoa Thanh Cong!!!", 110, 14, 2, 900);
 						//Add lai ma tin chi cho mang 
-						for (int i = 0; i < DSDKMAX; i++) {
+						for (int i = 0; i < randRage; i++) {
 							if (randArr[i] == 0) {
 								randArr[i] = maLopTinChi_int;
 								break;
@@ -1824,6 +1874,10 @@ void DocDSDK(DS_LopTinChi& ds_ltc, DS_DangKy& ds_dk) {
 			return;
 
 		int maLopTinChi = std::stoi(data);
+		for (i = 0; i < ds_ltc.soLuong; i++) {
+			if (ds_ltc.ds[i]->maLopTinChi == maLopTinChi)
+				break;
+		}
 		getline(fileInput, data);
 		if (data == "end")
 			continue;
@@ -1848,7 +1902,7 @@ void DocDSDK(DS_LopTinChi& ds_ltc, DS_DangKy& ds_dk) {
 			currentDangKy->next = newDangKy;
 			currentDangKy = newDangKy;
 		}
-		i++;
+		//i++;
 	}
 	fileInput.close(); //Khong co cung khong sao, C++ tu dong
 	return;
@@ -3438,6 +3492,12 @@ void ThemSinhVien(DS_SinhVien& ds_sv, string choice = "them") {
 
 //Kiểm tra lớp có tồn tại hay không, sẵn track start là sv đầu tiên lớp, bstart sau start.
 int KiemTraLopCanXoa(DS_SinhVien*& bstart, DS_SinhVien*& start, SinhVien sv) {
+	//Tính chất insert order, lớp nhỏ luôn nằm đầu
+	if (start != NULL && strcmp(start->sinhVien.maLop, sv.maLop) > 0) {
+		bstart = first;
+		start = first;
+		return 0;
+	}
 	while (start != NULL) {
 		if (strcmp(start->sinhVien.maLop, sv.maLop) == 0) {
 			return 1;
@@ -3887,10 +3947,6 @@ void InitializeTree(DS_MonHoc* root) {
 	return;
 }
 
-void Luu_NLR(DS_MonHoc* p, ofstream& fileOutput) {
-
-}
-
 //cách lưu LNR làm biến đổi cây khi đọc
 void Luu_LNR(DS_MonHoc* p, ofstream& fileOutput) {
 	if (p != NULL) {
@@ -3904,18 +3960,32 @@ void Luu_LNR(DS_MonHoc* p, ofstream& fileOutput) {
 	return;
 }
 
+//Test cách lưu NLR, cây đẹp
+void Luu_NLR(DS_MonHoc* p, ofstream& fileOutput) {
+	if (p != NULL) {
+		fileOutput << p->monHoc.maMonHoc << endl
+			<< p->monHoc.tenMonHoc << endl
+			<< p->monHoc.soTCLT << endl
+			<< p->monHoc.soTCTH << endl;
+		Luu_NLR(p->left, fileOutput);
+		Luu_NLR(p->right, fileOutput);
+	}
+	return;
+}
+
 void LuuDSMH() {
 	std::ofstream fileOutput("E:/DevC/AAAAA/ProjectCTDL/DSMH.txt");
 	if (fileOutput.fail()) {
 		cout << "Failed to open this file!" << endl;
 		return;
 	}
-	Luu_LNR(tree, fileOutput);
+	//Luu_LNR(tree, fileOutput);
+	Luu_NLR(tree, fileOutput);
 	return;
 }
 
-//Search Key
-DS_MonHoc* CheckTrungMMH(DS_MonHoc* root, char maMonHoc[]) { // địa chỉ là trùng ,NULL là không trùng
+//Search Key (nhanh), địa chỉ là trùng ,NULL là không trùng
+DS_MonHoc* CheckTrungMMH(DS_MonHoc* root, char maMonHoc[]) {
 	DS_MonHoc* p = root;
 	if (p == NULL)
 		return p;
@@ -6016,7 +6086,6 @@ void InBangNhapDiem(DS_DangKy* head, DS_LopTinChi& ds_ltc, char tenMonHoc[], int
 		p = p->next;
 	}
 
-
 	move = 0;
 RELOAD:
 	if (choice == "IN") {
@@ -6161,7 +6230,6 @@ RELOAD:
 
 					string diem_str(diem);
 					int diem_temp = atof(diem_str.c_str()) * 10;           //diem[5] khi vào ChuanHoa phải đc * 10
-					//*10 sẽ có trường hợp lên 10000, lố ký tự
 					if (diem_temp > 1000)
 						diem_temp = 0;
 					strcpy_s(diem, std::to_string(diem_temp).c_str());
@@ -6687,6 +6755,7 @@ void TimKiemDiem(DS_LopTinChi& ds_ltc, DS_SinhVien* p, char maLop[], string choi
 		DS_MonHoc* s = CheckTrungMMH(tree, maMonHoc);
 		tongChi += (s->monHoc.soTCLT + s->monHoc.soTCTH);
 	}
+
 	int namNhapHoc = p->sinhVien.namNhapHoc;
 	int arrNamhoc[4] = { namNhapHoc,namNhapHoc + 1,namNhapHoc + 2,namNhapHoc + 3 };
 	int count = 0;
@@ -6696,7 +6765,7 @@ void TimKiemDiem(DS_LopTinChi& ds_ltc, DS_SinhVien* p, char maLop[], string choi
 			count++;
 		}
 	}
-	//Arr chứa vị trí của các lớp tín chỉ phù hợp vs yêu cầu môn học quy định + năm nhập học (lớp mở sau năm nhập học->sai)
+	//Arr chứa vị trí của các lớp tín chỉ phù hợp vs yêu cầu môn học quy định + năm nhập học (lớp mở trước năm nhập học->sai)
 	int* arrLop = new int[count];
 	std::fill_n(arrLop, count, -1);
 	for (int i = 0; i < ds_ltc.soLuong; i++) {
